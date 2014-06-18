@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import httpretty
 
-from analyticsdataclient.client import RestClient, ClientError
+from edx_analytics_api_client.client import RestClient, ClientError
 
 
 class RestClientTest(TestCase):

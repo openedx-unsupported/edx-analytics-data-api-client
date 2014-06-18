@@ -1,5 +1,5 @@
 
-from analyticsdataclient.client import Client, ClientError
+from edx_analytics_api_client.client import Client, ClientError
 
 
 class InMemoryClient(Client):

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from analyticsdataclient.course import Course
-from analyticsdataclient.tests import InMemoryClient
+from edx_analytics_api_client.course import Course
+from edx_analytics_api_client.tests import InMemoryClient
 
 
 class CourseTest(TestCase):
