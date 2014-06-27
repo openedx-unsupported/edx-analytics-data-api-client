@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from edx_analytics_api_client.status import Status
-from edx_analytics_api_client.tests import InMemoryClient
+from analyticsclient.status import Status
+from analyticsclient.tests import InMemoryClient
 
 
 class StatusTest(TestCase):

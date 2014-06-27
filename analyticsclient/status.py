@@ -1,4 +1,4 @@
-from edx_analytics_api_client.client import ClientError
+from analyticsclient.client import ClientError
 
 
 class Status(object):
@@ -8,7 +8,7 @@ class Status(object):
 
     Arguments:
 
-        client (edx_analytics_api_client.client.Client): The client to use to access remote resources.
+        client (analyticsclient.client.Client): The client to use to access remote resources.
 
     """
 
@@ -18,7 +18,7 @@ class Status(object):
 
         Arguments:
 
-            client (edx_analytics_api_client.client.Client): The client to use to access remote resources.
+            client (analyticsclient.client.Client): The client to use to access remote resources.
 
         """
         self.client = client

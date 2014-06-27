@@ -13,7 +13,7 @@ class Course(object):
 
         Arguments:
 
-            client (edx_analytics_api_client.client.Client): The client to use to access remote resources.
+            client (analyticsclient.client.Client): The client to use to access remote resources.
             course_key (mixed): An object that when passed to unicode() returns the unique identifier for the course as
                 it is represented in the data pipeline results.
 
