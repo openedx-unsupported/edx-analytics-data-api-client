@@ -1,6 +1,6 @@
 ROOT = $(shell echo "$$PWD")
 COVERAGE = $(ROOT)/build/coverage
-PACKAGE = edx_analytics_api_client
+PACKAGE = analyticsclient
 DATABASES = default analytics
 
 validate: test.requirements test quality
