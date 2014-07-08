@@ -1,15 +1,10 @@
-from analyticsclient.client import ClientError
+from analyticsclient.exceptions import ClientError
 
 
 class Status(object):
 
     """
-    Query the status of the connection between the client and the remote service.
-
-    Arguments:
-
-        client (analyticsclient.client.Client): The client to use to access remote resources.
-
+    API server status.
     """
 
     def __init__(self, client):

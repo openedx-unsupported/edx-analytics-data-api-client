@@ -1,4 +1,4 @@
-restnavigator==0.2.0
+requests==2.2.0
 
 # Testing
 coverage==3.7.1

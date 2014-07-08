@@ -1,52 +1,43 @@
 import json
-from unittest import TestCase
 
 import httpretty
 
-from analyticsclient.client import RestClient, ClientError
+from analyticsclient.client import Client
+from analyticsclient.exceptions import ClientError
+from analyticsclient.tests import ClientTestCase
 
 
-class RestClientTest(TestCase):
-
-    BASE_URI = 'http://localhost:9091'
-    VERSIONED_BASE_URI = BASE_URI + '/api/v0'
-
-    TEST_ENDPOINT = 'test'
-    TEST_URI = VERSIONED_BASE_URI + '/' + TEST_ENDPOINT
-
+class ClientTests(ClientTestCase):
     def setUp(self):
+        super(ClientTests, self).setUp()
         httpretty.enable()
-        self.client = RestClient(base_url=self.BASE_URI)
+        self.test_endpoint = 'test'
+        self.test_uri = self.get_api_url(self.test_endpoint)
 
     def tearDown(self):
         httpretty.disable()
 
     def test_has_resource(self):
-        httpretty.register_uri(httpretty.GET, self.TEST_URI, body='')
-        self.assertEquals(self.client.has_resource(self.TEST_ENDPOINT), True)
+        httpretty.register_uri(httpretty.GET, self.test_uri, body='')
+        self.assertEquals(self.client.has_resource(self.test_endpoint), True)
 
     def test_missing_resource(self):
-        httpretty.register_uri(httpretty.GET, self.TEST_URI, body='', status=404)
-        self.assertEquals(self.client.has_resource(self.TEST_ENDPOINT), False)
+        httpretty.register_uri(httpretty.GET, self.test_uri, body='', status=404)
+        self.assertEquals(self.client.has_resource(self.test_endpoint), False)
 
     def test_failed_authentication(self):
-        self.client = RestClient(base_url=self.BASE_URI, auth_token='atoken')
-        httpretty.register_uri(httpretty.GET, self.TEST_URI, body='', status=401)
+        client = Client(base_url=self.api_url, auth_token='atoken')
+        httpretty.register_uri(httpretty.GET, self.test_uri, body='', status=401)
 
-        self.assertEquals(self.client.has_resource(self.TEST_ENDPOINT), False)
+        self.assertEquals(client.has_resource(self.test_endpoint), False)
         self.assertEquals(httpretty.last_request().headers['Authorization'], 'Token atoken')
 
     def test_get(self):
-        data = {
-            'foo': 'bar'
-        }
-        httpretty.register_uri(httpretty.GET, self.TEST_URI, body=json.dumps(data))
-        self.assertEquals(self.client.get(self.TEST_ENDPOINT), data)
+        data = {'foo': 'bar'}
+        httpretty.register_uri(httpretty.GET, self.test_uri, body=json.dumps(data))
+        self.assertEquals(self.client.get(self.test_endpoint), data)
 
-    def test_get_invalid_json(self):
-        data = {
-            'foo': 'bar'
-        }
-        httpretty.register_uri(httpretty.GET, self.TEST_URI, body=json.dumps(data)[:6])
+        # Bad JSON
+        httpretty.register_uri(httpretty.GET, self.test_uri, body=json.dumps(data)[:6])
         with self.assertRaises(ClientError):
-            self.client.get(self.TEST_ENDPOINT)
+            self.client.get(self.test_endpoint)
