@@ -1,7 +1,7 @@
+import analyticsclient.activity_type as at
 
 
 class Course(object):
-
     """
     Course-related analytics.
     """
@@ -17,23 +17,22 @@ class Course(object):
 
         """
         self.client = client
-        self.course_id = course_id
+        self.course_id = unicode(course_id)
 
-    @property
-    def recent_active_user_count(self):
-        """A count of users who have recently interacted with the course in any way."""
-        # TODO: should we return something more structured than a python dict?
-        return self.client.get('courses/{0}/recent_activity'.format(self.course_id))
+    def enrollment(self, demographic):
+        """
+        Get course enrollment data grouped by demographic.
 
-    @property
-    def recent_problem_activity_count(self):
-        """A count of users who have recently attempted a problem."""
-        # TODO: Can we avoid passing around strings like "ATTEMPTED_PROBLEM" in the data pipeline and the client?
-        return self.client.get(
-            'courses/{0}/recent_activity?activity_type=ATTEMPTED_PROBLEM'.format(self.course_id))
+        Arguments:
+            demographic (str): Demographic by which enrollment data should be grouped.
+        """
+        return self.client.get('courses/{0}/enrollment/{1}'.format(self.course_id, demographic))
 
-    def enrollment(self, demographic=None):
-        uri = 'courses/{0}/enrollment'.format(self.course_id)
-        if demographic:
-            uri += '/%s' % demographic
-        return self.client.get(uri)
+    def recent_activity(self, activity_type=at.ANY):
+        """
+        Get the recent course activity.
+
+        Arguments:
+            activity_type (str): The type of recent activity to return. Defaults to ANY.
+        """
+        return self.client.get('courses/{0}/recent_activity?activity_type={1}'.format(self.course_id, activity_type))
