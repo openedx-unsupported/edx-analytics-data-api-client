@@ -8,7 +8,7 @@ setup(
     description='Client used to access edX analytics data warehouse',
     long_description=open('README.rst').read(),
     install_requires=[
-        "restnavigator==0.2.0",
+        "requests==2.2.0",
     ],
     tests_require=[
         "coverage==3.7.1",

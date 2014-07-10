@@ -1,92 +1,42 @@
-
 import logging
 
 import requests
 import requests.exceptions
+
+from analyticsclient.course import Course
+from analyticsclient.exceptions import ClientError
+from analyticsclient.status import Status
 
 
 log = logging.getLogger(__name__)
 
 
 class Client(object):
+    """
+    Analytics API client
 
-    """A client capable of retrieving the requested resources."""
-
-    DEFAULT_TIMEOUT = 0.1  # In seconds
-    DEFAULT_VERSION = 'v0'
-
-    def __init__(self, version=DEFAULT_VERSION):
+    The instance has attributes `status` and `courses` that provide access to instances of
+    :class: `~analyticsclient.status` and :class: `~analyticsclient.course`. This is the preferred (and only supported)
+    way to get access to those classes and their methods.
+    """
+    def __init__(self, base_url, auth_token=None):
         """
-        Initialize the Client.
+        Initialize the client.
 
         Arguments:
-
-            version (str): When breaking changes are made to either the resource addresses or their returned data, this
-                value will change. Multiple clients can be made which adhere to each version.
-
+            base_url (str): URL of the API server (e.g. http://analytics.edx.org/api/v0)
+            auth_token (str): Authentication token
         """
-        self.version = version
-
-    def get(self, resource, timeout=None):
-        """
-        Retrieve the data for a resource.
-
-        Arguments:
-
-            resource (str): Path in the form of slash separated strings.
-            timeout (float): Continue to attempt to retrieve a resource for this many seconds before giving up and
-                raising an error.
-
-        Returns: A structure consisting of simple python types (dict, list, int, str etc).
-
-        Raises: ClientError if the resource cannot be retrieved for any reason.
-
-        """
-        raise NotImplementedError
-
-    def has_resource(self, resource, timeout=None):
-        """
-        Check if a resource exists.
-
-        Arguments:
-
-            resource (str): Path in the form of slash separated strings.
-            timeout (float): Continue to attempt to retrieve a resource for this many seconds before giving up and
-                raising an error.
-
-        Returns: True iff the resource exists.
-
-        """
-        raise NotImplementedError
-
-
-class RestClient(Client):
-
-    """Retrieve resources from a remote REST API."""
-
-    DEFAULT_AUTH_TOKEN = ''
-    DEFAULT_BASE_URL = 'http://localhost:9090'
-
-    def __init__(self, base_url=DEFAULT_BASE_URL, auth_token=DEFAULT_AUTH_TOKEN):
-        """
-        Initialize the RestClient.
-
-        Arguments:
-
-            base_url (str): A URL containing the scheme, netloc and port of the remote service.
-            auth_token (str): The token that should be used to authenticate requests made to the remote service.
-
-        """
-        super(RestClient, self).__init__()
-
-        self.base_url = '{0}/api/{1}'.format(base_url, self.version)
+        self.base_url = base_url
         self.auth_token = auth_token
+        self.timeout = 0.1
+
+        self.status = Status(self)
+        self.courses = lambda course_id: Course(self, course_id)
 
     def get(self, resource, timeout=None):
         """
         Retrieve the data for a resource.
-
-        Inherited from `Client`.
 
         Arguments:
 
@@ -131,7 +81,7 @@ class RestClient(Client):
 
     def _request(self, resource, timeout=None):
         if timeout is None:
-            timeout = self.DEFAULT_TIMEOUT
+            timeout = self.timeout
 
         headers = {
             'Accept': 'application/json',
@@ -153,11 +103,3 @@ class RestClient(Client):
             message = 'Unable to retrieve resource'
             log.exception(message)
             raise ClientError('{0} "{1}"'.format(message, resource))
-
-
-# TODO: Provide more detailed errors as necessary.
-class ClientError(Exception):
-
-    """An error occurred that prevented the client from performing the requested operation."""
-
-    pass

@@ -1,27 +1,25 @@
+from unittest import TestCase
 
-from analyticsclient.client import Client, ClientError
+from analyticsclient.client import Client
 
 
-class InMemoryClient(Client):
+class ClientTestCase(TestCase):
+    """
+    Base class for client-related tests.
+    """
 
-    """Serves resources that have previously been set and stored in memory."""
+    def setUp(self):
+        self.api_url = 'http://localhost:9999/api/v0'
+        self.client = Client(self.api_url)
 
-    def __init__(self):
-        """Initialize the fake client."""
-        super(InMemoryClient, self).__init__()
-        self.resources = {}
+    def get_api_url(self, path):
+        """
+        Build an API URL with the specified path.
 
-    def has_resource(self, resource, timeout=None):
-        """Return True iff the resource has been previously set."""
-        try:
-            self.get(resource, timeout=timeout)
-            return True
-        except ClientError:
-            return False
+        Arguments:
+            path (str): Path to be appended to the URL
 
-    def get(self, resource, timeout=None):
-        """Return the resource from memory."""
-        try:
-            return self.resources[resource]
-        except KeyError:
-            raise ClientError('Unable to find requested resource')
+        Returns:
+            Complete API URL and path
+        """
+        return "{0}/{1}".format(self.client.base_url, path)

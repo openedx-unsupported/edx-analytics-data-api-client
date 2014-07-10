@@ -1,48 +1,65 @@
-from unittest import TestCase
+import json
 
-from analyticsclient.status import Status
-from analyticsclient.tests import InMemoryClient
+import httpretty
+
+from analyticsclient.tests import ClientTestCase
 
 
-class StatusTest(TestCase):
-
-    def setUp(self):
-        self.client = InMemoryClient()
-        self.status = Status(self.client)
-
+class StatusTests(ClientTestCase):
+    @httpretty.activate
     def test_alive(self):
-        self.assertEquals(self.status.alive, False)
+        """
+        Alive status should be True if server responds with HTTP 200, otherwise False.
+        """
 
-        self.client.resources['status'] = ''
-        self.assertEquals(self.status.alive, True)
+        # Normal behavior
+        httpretty.register_uri(httpretty.GET, self.get_api_url('status'))
+        self.assertTrue(self.client.status.alive)
 
+        # "Kill" the server (assuming there is nothing running at API_URL)
+        httpretty.reset()
+        self.assertFalse(self.client.status.alive)
+
+    @httpretty.activate
     def test_authenticated(self):
-        self.assertEquals(self.status.authenticated, False)
+        """
+        Authenticated status should be True if client is authenticated, otherwise False.
+        """
 
-        self.client.resources['authenticated'] = ''
-        self.assertEquals(self.status.authenticated, True)
+        # Normal behavior
+        httpretty.register_uri(httpretty.GET, self.get_api_url('authenticated'))
+        self.assertTrue(self.client.status.authenticated)
 
+        # Non-authenticated user
+        httpretty.register_uri(httpretty.GET, self.get_api_url('authenticated'), status=401)
+        self.assertFalse(self.client.status.authenticated)
+
+    @httpretty.activate
     def test_healthy(self):
-        self.client.resources['health'] = {
+        """
+        Healthy status should be True if server is alive and can respond to requests, otherwise False.
+        """
+
+        # Unresponsive server
+        self.assertFalse(self.client.status.healthy)
+
+        body = {
             'overall_status': 'OK',
             'detailed_status': {
                 'database_connection': 'OK'
             }
         }
 
-        self.assertEquals(self.status.healthy, True)
+        # Normal behavior
+        httpretty.register_uri(httpretty.GET, self.get_api_url('health'), body=json.dumps(body))
+        self.assertTrue(self.client.status.healthy)
 
-    def test_not_healthy(self):
-        self.client.resources['health'] = {
-            'overall_status': 'UNAVAILABLE',
-            'detailed_status': {
-                'database_connection': 'UNAVAILABLE'
-            }
-        }
+        # Sick server
+        body['overall_status'] = 'BAD'
+        httpretty.register_uri(httpretty.GET, self.get_api_url('health'), body=json.dumps(body))
+        self.assertFalse(self.client.status.healthy)
 
-        self.assertEquals(self.status.healthy, False)
-
-    def test_invalid_health_value(self):
-        self.client.resources['health'] = {}
-
-        self.assertEquals(self.status.healthy, False)
+        # Odd response
+        del body['overall_status']
+        httpretty.register_uri(httpretty.GET, self.get_api_url('health'), body=json.dumps(body))
+        self.assertFalse(self.client.status.healthy)
