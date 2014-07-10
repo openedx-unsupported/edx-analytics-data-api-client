@@ -41,3 +41,12 @@ class ClientTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, self.test_uri, body=json.dumps(data)[:6])
         with self.assertRaises(ClientError):
             self.client.get(self.test_endpoint)
+
+    def test_strip_trailing_slash(self):
+        url = 'http://example.com'
+        client = Client(url)
+        self.assertEqual(client.base_url, url)
+
+        url_with_slash = 'http://example.com/'
+        client = Client(url_with_slash)
+        self.assertEqual(client.base_url, url)

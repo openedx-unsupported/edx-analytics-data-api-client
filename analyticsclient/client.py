@@ -27,7 +27,7 @@ class Client(object):
             base_url (str): URL of the API server (e.g. http://analytics.edx.org/api/v0)
             auth_token (str): Authentication token
         """
-        self.base_url = base_url
+        self.base_url = base_url.rstrip('/')
         self.auth_token = auth_token
         self.timeout = 0.1
 
