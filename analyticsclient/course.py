@@ -24,7 +24,7 @@ class Course(object):
         Arguments:
             demographic (str): Demographic by which enrollment data should be grouped.
         """
-        return self.client.get('courses/{0}/enrollment/{1}'.format(self.course_id, demographic))
+        return self.client.get('courses/{0}/enrollment/{1}/'.format(self.course_id, demographic))
 
     def recent_activity(self, activity_type=at.ANY):
         """
@@ -33,4 +33,4 @@ class Course(object):
         Arguments:
             activity_type (str): The type of recent activity to return. Defaults to ANY.
         """
-        return self.client.get('courses/{0}/recent_activity?activity_type={1}'.format(self.course_id, activity_type))
+        return self.client.get('courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type))
