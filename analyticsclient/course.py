@@ -2,9 +2,7 @@ import analyticsclient.activity_type as at
 
 
 class Course(object):
-    """
-    Course-related analytics.
-    """
+    """ Course-related analytics. """
 
     def __init__(self, client, course_id):
         """

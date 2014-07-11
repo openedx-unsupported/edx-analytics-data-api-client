@@ -13,12 +13,13 @@ log = logging.getLogger(__name__)
 
 class Client(object):
     """
-    Analytics API client
+    Analytics API client.
 
     The instance has attributes `status` and `courses` that provide access to instances of
     :class: `~analyticsclient.status` and :class: `~analyticsclient.course`. This is the preferred (and only supported)
     way to get access to those classes and their methods.
     """
+
     def __init__(self, base_url, auth_token=None):
         """
         Initialize the client.
