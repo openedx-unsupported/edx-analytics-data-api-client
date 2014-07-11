@@ -19,9 +19,9 @@ class CoursesTests(ClientTestCase):
         httpretty.disable()
 
     def assertEnrollmentResponseData(self, course, data, demographic=None):
-        uri = self.get_api_url('courses/{0}/enrollment'.format(course.course_id))
+        uri = self.get_api_url('courses/{0}/enrollment/'.format(course.course_id))
         if demographic:
-            uri += '/%s' % demographic
+            uri += '%s/' % demographic
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(data))
         self.assertDictEqual(data, course.enrollment(demographic))
 
@@ -34,7 +34,7 @@ class CoursesTests(ClientTestCase):
             u'count': 200,
         }
 
-        uri = self.get_api_url('courses/{0}/recent_activity?activity_type={1}'.format(self.course_id, activity_type))
+        uri = self.get_api_url('courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type))
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertDictEqual(body, self.course.recent_activity(activity_type))
 

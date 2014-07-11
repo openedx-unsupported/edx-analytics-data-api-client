@@ -20,17 +20,18 @@ class Client(object):
     way to get access to those classes and their methods.
     """
 
-    def __init__(self, base_url, auth_token=None):
+    def __init__(self, base_url, auth_token=None, timeout=0.25):
         """
         Initialize the client.
 
         Arguments:
             base_url (str): URL of the API server (e.g. http://analytics.edx.org/api/v0)
             auth_token (str): Authentication token
+            timeout (number): Maximum number of seconds during which all requests musts complete
         """
         self.base_url = base_url.rstrip('/')
         self.auth_token = auth_token
-        self.timeout = 0.1
+        self.timeout = timeout
 
         self.status = Status(self)
         self.courses = lambda course_id: Course(self, course_id)
