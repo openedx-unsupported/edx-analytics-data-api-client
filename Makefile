@@ -19,4 +19,4 @@ quality:
 	pylint --rcfile=.pylintrc $(PACKAGE)
 
 	# Ignore module level docstrings and all test files
-	pep257 --ignore=D100 --match='(?!test).*py' $(PACKAGE)
+	pep257 --ignore=D100,D203 --match='(?!test).*py' $(PACKAGE)

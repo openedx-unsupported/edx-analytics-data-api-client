@@ -1,6 +1,4 @@
-"""
-Course activity types.
-"""
+""" Course activity types.  """
 
 ANY = 'any'
 ATTEMPTED_PROBLEM = 'attempted_problem'

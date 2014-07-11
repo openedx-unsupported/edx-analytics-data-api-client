@@ -4,11 +4,10 @@ from analyticsclient.client import Client
 
 
 class ClientTestCase(TestCase):
-    """
-    Base class for client-related tests.
-    """
+    """ Base class for client-related tests. """
 
     def setUp(self):
+        """ Configure Client. """
         self.api_url = 'http://localhost:9999/api/v0'
         self.client = Client(self.api_url)
 
