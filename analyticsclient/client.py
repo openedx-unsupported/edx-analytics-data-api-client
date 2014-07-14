@@ -4,7 +4,7 @@ import requests
 import requests.exceptions
 
 from analyticsclient.course import Course
-from analyticsclient.exceptions import ClientError
+from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError
 from analyticsclient.status import Status
 
 
@@ -92,12 +92,23 @@ class Client(object):
             headers['Authorization'] = 'Token ' + self.auth_token
 
         try:
-            response = requests.get('{0}/{1}'.format(self.base_url, resource), headers=headers, timeout=timeout)
+            uri = '{0}/{1}'.format(self.base_url, resource)
+            response = requests.get(uri, headers=headers, timeout=timeout)
 
-            if response.status_code != requests.codes.ok:  # pylint: disable=no-member
-                message = 'Resource "{0}" returned status code {1}'.format(resource, response.status_code)
+            status = response.status_code
+            if status != requests.codes.ok:  # pylint: disable=no-member
+                message = 'Resource "{0}" returned status code {1}'.format(resource, status)
+                error_class = ClientError
+
+                if status == requests.codes.bad_request:    # pylint: disable=no-member
+                    message = 'The request to {0} was invalid.'.format(uri)
+                    error_class = InvalidRequestError
+                elif status == requests.codes.not_found:    # pylint: disable=no-member
+                    message = 'Resource {0} was not found on the API server.'.format(uri)
+                    error_class = NotFoundError
+
                 log.error(message)
-                raise ClientError(message)
+                raise error_class(message)
 
             return response
 
