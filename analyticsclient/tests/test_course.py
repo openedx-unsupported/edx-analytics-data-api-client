@@ -1,8 +1,10 @@
 import json
 
 import httpretty
+import re
 from analyticsclient import activity_type as at
 from analyticsclient import demographic as demo
+from analyticsclient.exceptions import NotFoundError, InvalidRequestError
 
 from analyticsclient.tests import ClientTestCase
 
@@ -25,6 +27,7 @@ class CoursesTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(data))
         self.assertDictEqual(data, course.enrollment(demographic))
 
+    @httpretty.activate
     def assertRecentActivityResponseData(self, course, activity_type):
         body = {
             u'course_id': unicode(course.course_id),
@@ -79,3 +82,25 @@ class CoursesTests(ClientTestCase):
         self.assertRecentActivityResponseData(self.course, at.ATTEMPTED_PROBLEM)
         self.assertRecentActivityResponseData(self.course, at.PLAYED_VIDEO)
         self.assertRecentActivityResponseData(self.course, at.POSTED_FORUM)
+
+    def test_not_found(self):
+        """ Course calls should raise a NotFoundError when provided with an invalid course. """
+
+        course_id = 'not-a-course-id'
+        uri = self.get_api_url('courses/{0}/'.format(course_id))
+        uri = re.compile(r'^' + re.escape(uri) + r'.*$')
+        httpretty.register_uri(httpretty.GET, uri, status=404)
+
+        course = self.client.courses(course_id)
+        self.assertRaises(NotFoundError, course.recent_activity, at.ANY)
+        self.assertRaises(NotFoundError, course.enrollment, demo.EDUCATION)
+
+    def test_invalid_parameter(self):
+        """ Course calls should raise a InvalidRequestError when parameters are invalid. """
+
+        uri = self.get_api_url('courses/{0}/'.format(self.course_id))
+        uri = re.compile(r'^' + re.escape(uri) + r'.*$')
+        httpretty.register_uri(httpretty.GET, uri, status=400)
+
+        self.assertRaises(InvalidRequestError, self.course.recent_activity, 'not-a-an-activity-type')
+        self.assertRaises(InvalidRequestError, self.course.enrollment, 'not-a-demographic')
