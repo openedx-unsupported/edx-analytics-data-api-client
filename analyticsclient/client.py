@@ -4,7 +4,7 @@ import requests
 import requests.exceptions
 
 from analyticsclient.course import Course
-from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError
+from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
 from analyticsclient.status import Status
 
 
@@ -81,6 +81,7 @@ class Client(object):
         except ClientError:
             return False
 
+    # pylint: disable=no-member
     def _request(self, resource, timeout=None):
         if timeout is None:
             timeout = self.timeout
@@ -96,14 +97,14 @@ class Client(object):
             response = requests.get(uri, headers=headers, timeout=timeout)
 
             status = response.status_code
-            if status != requests.codes.ok:  # pylint: disable=no-member
+            if status != requests.codes.ok:
                 message = 'Resource "{0}" returned status code {1}'.format(resource, status)
                 error_class = ClientError
 
-                if status == requests.codes.bad_request:    # pylint: disable=no-member
+                if status == requests.codes.bad_request:
                     message = 'The request to {0} was invalid.'.format(uri)
                     error_class = InvalidRequestError
-                elif status == requests.codes.not_found:    # pylint: disable=no-member
+                elif status == requests.codes.not_found:
                     message = 'Resource {0} was not found on the API server.'.format(uri)
                     error_class = NotFoundError
 
@@ -111,6 +112,11 @@ class Client(object):
                 raise error_class(message)
 
             return response
+
+        except requests.exceptions.Timeout:
+            message = "Response from {0} exceeded timeout of {1}s."
+            log.exception(message)
+            raise TimeoutError(message)
 
         except requests.exceptions.RequestException:
             message = 'Unable to retrieve resource'

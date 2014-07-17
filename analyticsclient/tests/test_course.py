@@ -20,12 +20,28 @@ class CoursesTests(ClientTestCase):
         super(CoursesTests, self).tearDown()
         httpretty.disable()
 
-    def assertEnrollmentResponseData(self, course, data, demographic=None):
+    def assertCorrectEnrollmentUrl(self, course, demographic=None):
+        """ Verifies that the enrollment URL is correct. """
+
         uri = self.get_api_url('courses/{0}/enrollment/'.format(course.course_id))
         if demographic:
             uri += '%s/' % demographic
-        httpretty.register_uri(httpretty.GET, uri, body=json.dumps(data))
-        self.assertDictEqual(data, course.enrollment(demographic))
+
+        httpretty.register_uri(httpretty.GET, uri, body='{}')
+        course.enrollment(demographic)
+
+        date = '2014-01-01'
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, '{0}?start_date={1}'.format(uri, date), body='{}')
+        course.enrollment(demographic, start_date=date)
+
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, '{0}?end_date={1}'.format(uri, date), body='{}')
+        course.enrollment(demographic, end_date=date)
+
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, '{0}?start_date={1}&end_date={1}'.format(uri, date), body='{}')
+        course.enrollment(demographic, start_date=date, end_date=date)
 
     @httpretty.activate
     def assertRecentActivityResponseData(self, course, activity_type):
@@ -40,42 +56,6 @@ class CoursesTests(ClientTestCase):
         uri = self.get_api_url('courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type))
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertDictEqual(body, self.course.recent_activity(activity_type))
-
-    def test_enrollment_birth_year(self):
-        data = {
-            u'birth_years': {
-                u'1894': 13,
-                u'1895': 19
-            }
-        }
-        self.assertEnrollmentResponseData(self.course, data, demo.BIRTH_YEAR)
-
-    def test_enrollment_education(self):
-        data = {
-            u'education_levels': {
-                u'none': 667,
-                u'junior_secondary': 6051,
-                u'primary': 981,
-                u'associates': 12255,
-                u'bachelors': 70885,
-                u'masters': 53216,
-                u'doctorate': 9940,
-                u'other': 5722,
-                u'secondary': 51591
-            }
-        }
-
-        self.assertEnrollmentResponseData(self.course, data, demo.EDUCATION)
-
-    def test_enrollment_gender(self):
-        data = {
-            u'genders': {
-                u'm': 133240,
-                u'o': 423,
-                u'f': 77495
-            }
-        }
-        self.assertEnrollmentResponseData(self.course, data, demo.GENDER)
 
     def test_recent_activity(self):
         self.assertRecentActivityResponseData(self.course, at.ANY)
@@ -104,3 +84,10 @@ class CoursesTests(ClientTestCase):
 
         self.assertRaises(InvalidRequestError, self.course.recent_activity, 'not-a-an-activity-type')
         self.assertRaises(InvalidRequestError, self.course.enrollment, 'not-a-demographic')
+
+    def test_enrollment(self):
+        self.assertCorrectEnrollmentUrl(self.course, None)
+        self.assertCorrectEnrollmentUrl(self.course, demo.BIRTH_YEAR)
+        self.assertCorrectEnrollmentUrl(self.course, demo.EDUCATION)
+        self.assertCorrectEnrollmentUrl(self.course, demo.GENDER)
+        self.assertCorrectEnrollmentUrl(self.course, demo.LOCATION)
