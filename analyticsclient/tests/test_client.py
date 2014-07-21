@@ -1,9 +1,11 @@
 import json
 
 import httpretty
+import mock
+import requests.exceptions
 
 from analyticsclient.client import Client
-from analyticsclient.exceptions import ClientError
+from analyticsclient.exceptions import ClientError, TimeoutError
 from analyticsclient.tests import ClientTestCase
 
 
@@ -12,33 +14,36 @@ class ClientTests(ClientTestCase):
         super(ClientTests, self).setUp()
         httpretty.enable()
         self.test_endpoint = 'test'
-        self.test_uri = self.get_api_url(self.test_endpoint)
+        self.test_url = self.get_api_url(self.test_endpoint)
 
     def tearDown(self):
         httpretty.disable()
 
     def test_has_resource(self):
-        httpretty.register_uri(httpretty.GET, self.test_uri, body='')
+        httpretty.register_uri(httpretty.GET, self.test_url, body='')
         self.assertEquals(self.client.has_resource(self.test_endpoint), True)
 
     def test_missing_resource(self):
-        httpretty.register_uri(httpretty.GET, self.test_uri, body='', status=404)
+        httpretty.register_uri(httpretty.GET, self.test_url, body='', status=404)
         self.assertEquals(self.client.has_resource(self.test_endpoint), False)
 
     def test_failed_authentication(self):
         client = Client(base_url=self.api_url, auth_token='atoken')
-        httpretty.register_uri(httpretty.GET, self.test_uri, body='', status=401)
+        httpretty.register_uri(httpretty.GET, self.test_url, body='', status=401)
 
         self.assertEquals(client.has_resource(self.test_endpoint), False)
         self.assertEquals(httpretty.last_request().headers['Authorization'], 'Token atoken')
 
     def test_get(self):
         data = {'foo': 'bar'}
-        httpretty.register_uri(httpretty.GET, self.test_uri, body=json.dumps(data))
+        httpretty.register_uri(httpretty.GET, self.test_url, body=json.dumps(data))
         self.assertEquals(self.client.get(self.test_endpoint), data)
 
-        # Bad JSON
-        httpretty.register_uri(httpretty.GET, self.test_uri, body=json.dumps(data)[:6])
+    def test_get_invalid_response_body(self):
+        """ Verify that client raises a ClientError if the response body cannot be properly parsed. """
+
+        data = {'foo': 'bar'}
+        httpretty.register_uri(httpretty.GET, self.test_url, body=json.dumps(data)[:6])
         with self.assertRaises(ClientError):
             self.client.get(self.test_endpoint)
 
@@ -50,3 +55,17 @@ class ClientTests(ClientTestCase):
         url_with_slash = 'http://example.com/'
         client = Client(url_with_slash)
         self.assertEqual(client.base_url, url)
+
+    # pylint: disable=protected-access
+    @mock.patch('requests.get', side_effect=requests.exceptions.Timeout)
+    def test_request_timeout(self, mock_get):
+        url = self.test_url
+        timeout = None
+        self.assertRaises(TimeoutError, self.client._request, self.test_endpoint, timeout=timeout)
+        headers = {'Accept': 'application/json'}
+        mock_get.assert_called_once_with(url, headers=headers, timeout=self.client.timeout)
+        mock_get.reset_mock()
+
+        timeout = 10
+        self.assertRaises(TimeoutError, self.client._request, self.test_endpoint, timeout=timeout)
+        mock_get.assert_called_once_with(url, headers=headers, timeout=timeout)
