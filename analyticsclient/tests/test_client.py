@@ -3,7 +3,9 @@ import json
 import httpretty
 import mock
 import requests.exceptions
+from testfixtures import log_capture
 
+from analyticsclient import data_format
 from analyticsclient.client import Client
 from analyticsclient.exceptions import ClientError, TimeoutError
 from analyticsclient.tests import ClientTestCase
@@ -18,6 +20,7 @@ class ClientTests(ClientTestCase):
 
     def tearDown(self):
         httpretty.disable()
+        httpretty.reset()
 
     def test_has_resource(self):
         httpretty.register_uri(httpretty.GET, self.test_url, body='')
@@ -58,14 +61,38 @@ class ClientTests(ClientTestCase):
 
     # pylint: disable=protected-access
     @mock.patch('requests.get', side_effect=requests.exceptions.Timeout)
-    def test_request_timeout(self, mock_get):
+    @log_capture()
+    def test_request_timeout(self, mock_get, lc):
         url = self.test_url
         timeout = None
-        self.assertRaises(TimeoutError, self.client._request, self.test_endpoint, timeout=timeout)
         headers = {'Accept': 'application/json'}
+
+        self.assertRaises(TimeoutError, self.client._request, self.test_endpoint, timeout=timeout)
+        msg = 'Response from {0} exceeded timeout of {1}s.'.format(self.test_endpoint, self.client.timeout)
+        lc.check(('analyticsclient.client', 'ERROR', msg))
+        lc.clear()
         mock_get.assert_called_once_with(url, headers=headers, timeout=self.client.timeout)
         mock_get.reset_mock()
 
         timeout = 10
         self.assertRaises(TimeoutError, self.client._request, self.test_endpoint, timeout=timeout)
         mock_get.assert_called_once_with(url, headers=headers, timeout=timeout)
+        msg = 'Response from {0} exceeded timeout of {1}s.'.format(self.test_endpoint, timeout)
+        lc.check(('analyticsclient.client', 'ERROR', msg))
+
+    def test_request_format(self):
+        httpretty.register_uri(httpretty.GET, self.test_url, body='{}')
+
+        response = self.client.get(self.test_endpoint)
+        self.assertEquals(httpretty.last_request().headers['Accept'], 'application/json')
+        self.assertDictEqual(response, {})
+
+        httpretty.register_uri(httpretty.GET, self.test_url, body='not-json')
+        response = self.client.get(self.test_endpoint, data_format=data_format.CSV)
+        self.assertEquals(httpretty.last_request().headers['Accept'], 'text/csv')
+        self.assertEqual(response, 'not-json')
+
+        httpretty.register_uri(httpretty.GET, self.test_url, body='{}')
+        response = self.client.get(self.test_endpoint, data_format=data_format.JSON)
+        self.assertEquals(httpretty.last_request().headers['Accept'], 'application/json')
+        self.assertDictEqual(response, {})
