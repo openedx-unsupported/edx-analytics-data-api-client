@@ -2,6 +2,7 @@ import logging
 
 import requests
 import requests.exceptions
+from analyticsclient import data_format as DF
 
 from analyticsclient.course import Course
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
@@ -36,7 +37,7 @@ class Client(object):
         self.status = Status(self)
         self.courses = lambda course_id: Course(self, course_id)
 
-    def get(self, resource, timeout=None):
+    def get(self, resource, timeout=None, data_format=DF.JSON):
         """
         Retrieve the data for a resource.
 
@@ -45,13 +46,17 @@ class Client(object):
             resource (str): Path in the form of slash separated strings.
             timeout (float): Continue to attempt to retrieve a resource for this many seconds before giving up and
                 raising an error.
+            data_format (str): Format in which data should be returned
 
-        Returns: A structure consisting of simple python types (dict, list, int, str etc).
+        Returns: API response data in specified data_format
 
         Raises: ClientError if the resource cannot be retrieved for any reason.
 
         """
-        response = self._request(resource, timeout=timeout)
+        response = self._request(resource, timeout=timeout, data_format=data_format)
+
+        if data_format == DF.CSV:
+            return response.text
 
         try:
             return response.json()
@@ -82,13 +87,18 @@ class Client(object):
             return False
 
     # pylint: disable=no-member
-    def _request(self, resource, timeout=None):
+    def _request(self, resource, timeout=None, data_format=DF.JSON):
         if timeout is None:
             timeout = self.timeout
 
+        accept_format = 'application/json'
+        if data_format == DF.CSV:
+            accept_format = 'text/csv'
+
         headers = {
-            'Accept': 'application/json',
+            'Accept': accept_format,
         }
+
         if self.auth_token:
             headers['Authorization'] = 'Token ' + self.auth_token
 
@@ -114,7 +124,7 @@ class Client(object):
             return response
 
         except requests.exceptions.Timeout:
-            message = "Response from {0} exceeded timeout of {1}s."
+            message = "Response from {0} exceeded timeout of {1}s.".format(resource, timeout)
             log.exception(message)
             raise TimeoutError(message)
 

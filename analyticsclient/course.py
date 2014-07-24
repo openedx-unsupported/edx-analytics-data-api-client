@@ -1,5 +1,6 @@
 import urllib
-import analyticsclient.activity_type as at
+import analyticsclient.activity_type as AT
+import analyticsclient.data_format as DF
 
 
 class Course(object):
@@ -18,7 +19,7 @@ class Course(object):
         self.client = client
         self.course_id = unicode(course_id)
 
-    def enrollment(self, demographic=None, start_date=None, end_date=None):
+    def enrollment(self, demographic=None, start_date=None, end_date=None, data_format=DF.JSON):
         """
         Get course enrollment data.
 
@@ -33,6 +34,7 @@ class Course(object):
             demographic (str): Demographic by which enrollment data should be grouped.
             start_date (str): Minimum date for returned enrollment data
             end_date (str): Maxmimum date for returned enrollment data
+            data_format (str): Format in which data should be returned
         """
         path = 'courses/{0}/enrollment/'.format(self.course_id)
         if demographic:
@@ -49,13 +51,15 @@ class Course(object):
         if querystring:
             path += '?{0}'.format(querystring)
 
-        return self.client.get(path)
+        return self.client.get(path, data_format=data_format)
 
-    def recent_activity(self, activity_type=at.ANY):
+    def recent_activity(self, activity_type=AT.ANY, data_format=DF.JSON):
         """
         Get the recent course activity.
 
         Arguments:
             activity_type (str): The type of recent activity to return. Defaults to ANY.
+            data_format (str): Format in which data should be returned
         """
-        return self.client.get('courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type))
+        path = 'courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type)
+        return self.client.get(path, data_format=data_format)
