@@ -22,6 +22,10 @@ class ClientTests(ClientTestCase):
         httpretty.disable()
         httpretty.reset()
 
+    def test_date_format(self):
+        self.assertEqual(Client.DATE_FORMAT, '%Y-%m-%d')
+        self.assertEqual(Client('').DATE_FORMAT, '%Y-%m-%d')
+
     def test_has_resource(self):
         httpretty.register_uri(httpretty.GET, self.test_url, body='')
         self.assertEquals(self.client.has_resource(self.test_endpoint), True)
