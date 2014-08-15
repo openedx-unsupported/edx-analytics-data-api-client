@@ -6,7 +6,7 @@ setup(
     packages=['analyticsclient'],
     url='https://github.com/edx/edx-analytics-api-client',
     description='Client used to access edX analytics data warehouse',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     install_requires=[
         "requests==2.2.0",
     ],
