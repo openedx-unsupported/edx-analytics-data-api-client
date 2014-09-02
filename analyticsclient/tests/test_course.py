@@ -44,6 +44,29 @@ class CoursesTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, '{0}?start_date={1}&end_date={1}'.format(uri, date), body='{}')
         course.enrollment(demographic, start_date=date, end_date=date)
 
+    def assertCorrectActivityUrl(self, course, activity_type=None):
+        """ Verifies that the activity URL is correct. """
+
+        uri = self.get_api_url('courses/{0}/activity/'.format(course.course_id))
+        if activity_type:
+            uri += '?activity_type=%s' % activity_type
+
+        httpretty.register_uri(httpretty.GET, uri, body='{}')
+        course.activity(activity_type)
+
+        date = '2014-01-01'
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, '{0}&start_date={1}'.format(uri, date), body='{}')
+        course.activity(activity_type, start_date=date)
+
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, '{0}&end_date={1}'.format(uri, date), body='{}')
+        course.activity(activity_type, end_date=date)
+
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, '{0}&start_date={1}&end_date={1}'.format(uri, date), body='{}')
+        course.activity(activity_type, start_date=date, end_date=date)
+
     @httpretty.activate
     def assertRecentActivityResponseData(self, course, activity_type):
         body = {
@@ -92,6 +115,13 @@ class CoursesTests(ClientTestCase):
         self.assertCorrectEnrollmentUrl(self.course, demo.EDUCATION)
         self.assertCorrectEnrollmentUrl(self.course, demo.GENDER)
         self.assertCorrectEnrollmentUrl(self.course, demo.LOCATION)
+
+    def test_activity(self):
+        self.assertRaises(InvalidRequestError, self.assertCorrectActivityUrl, self.course, None)
+        self.assertCorrectActivityUrl(self.course, at.ANY)
+        self.assertCorrectActivityUrl(self.course, at.ATTEMPTED_PROBLEM)
+        self.assertCorrectActivityUrl(self.course, at.PLAYED_VIDEO)
+        self.assertCorrectActivityUrl(self.course, at.POSTED_FORUM)
 
     def test_enrollment_data_format(self):
         uri = self.get_api_url('courses/{0}/enrollment/'.format(self.course.course_id))

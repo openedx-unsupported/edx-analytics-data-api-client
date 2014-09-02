@@ -1,6 +1,8 @@
 import urllib
+import warnings
 import analyticsclient.activity_type as AT
 import analyticsclient.data_format as DF
+from analyticsclient.exceptions import InvalidRequestError
 
 
 class Course(object):
@@ -33,7 +35,7 @@ class Course(object):
         Arguments:
             demographic (str): Demographic by which enrollment data should be grouped.
             start_date (str): Minimum date for returned enrollment data
-            end_date (str): Maxmimum date for returned enrollment data
+            end_date (str): Maximum date for returned enrollment data
             data_format (str): Format in which data should be returned
         """
         path = 'courses/{0}/enrollment/'.format(self.course_id)
@@ -53,6 +55,33 @@ class Course(object):
 
         return self.client.get(path, data_format=data_format)
 
+    def activity(self, activity_type=AT.ANY, start_date=None, end_date=None, data_format=DF.JSON):
+        """
+        Get the course student activity.
+
+        Arguments:
+            activity_type (str): The type of recent activity to return. Defaults to ANY.
+            data_format (str): Format in which data should be returned
+        """
+        if not activity_type:
+            raise InvalidRequestError('activity_type cannot be None.')
+
+        params = {
+            'activity_type': activity_type
+        }
+
+        if start_date:
+            params['start_date'] = start_date
+
+        if end_date:
+            params['end_date'] = end_date
+
+        path = 'courses/{0}/activity/'.format(self.course_id)
+        querystring = urllib.urlencode(params)
+        path += '?{0}'.format(querystring)
+
+        return self.client.get(path, data_format=data_format)
+
     def recent_activity(self, activity_type=AT.ANY, data_format=DF.JSON):
         """
         Get the recent course activity.
@@ -61,5 +90,7 @@ class Course(object):
             activity_type (str): The type of recent activity to return. Defaults to ANY.
             data_format (str): Format in which data should be returned
         """
+        warnings.warn('recent_activity has been deprecated! Use activity instead.', DeprecationWarning)
+
         path = 'courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type)
         return self.client.get(path, data_format=data_format)
