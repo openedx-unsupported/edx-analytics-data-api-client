@@ -1,7 +1,7 @@
 import urllib
 import warnings
-import analyticsclient.activity_type as AT
-import analyticsclient.data_format as DF
+import analyticsclient.constants.activity_type as AT
+import analyticsclient.constants.data_format as DF
 from analyticsclient.exceptions import InvalidRequestError
 
 

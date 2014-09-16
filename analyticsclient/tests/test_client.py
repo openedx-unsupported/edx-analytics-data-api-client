@@ -5,7 +5,7 @@ import mock
 import requests.exceptions
 from testfixtures import log_capture
 
-from analyticsclient import data_format
+from analyticsclient.constants import data_format
 from analyticsclient.client import Client
 from analyticsclient.exceptions import ClientError, TimeoutError
 from analyticsclient.tests import ClientTestCase

@@ -2,9 +2,9 @@ import json
 
 import httpretty
 import re
-from analyticsclient import activity_type as at
-from analyticsclient import data_format
-from analyticsclient import demographic as demo
+from analyticsclient.constants import activity_type as at
+from analyticsclient.constants import data_format
+from analyticsclient.constants import demographic as demo
 from analyticsclient.exceptions import NotFoundError, InvalidRequestError
 
 from analyticsclient.tests import ClientTestCase

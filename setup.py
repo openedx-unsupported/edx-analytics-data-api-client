@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='edx-analytics-data-api-client',
-    version='0.2.1',
+    version='0.2.2',
     packages=['analyticsclient'],
     url='https://github.com/edx/edx-analytics-data-api-client',
     description='Client used to access edX analytics data warehouse',

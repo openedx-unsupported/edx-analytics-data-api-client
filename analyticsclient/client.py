@@ -2,7 +2,7 @@ import logging
 
 import requests
 import requests.exceptions
-from analyticsclient import data_format as DF
+from analyticsclient.constants import data_format as DF
 
 from analyticsclient.course import Course
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError

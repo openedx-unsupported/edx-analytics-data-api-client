@@ -1,5 +1,5 @@
 from unittest import TestCase
-from analyticsclient import activity_type, demographic
+from analyticsclient.constants import activity_type, demographic
 
 
 class HelperTests(TestCase):
