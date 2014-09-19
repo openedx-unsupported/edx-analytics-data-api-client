@@ -23,7 +23,7 @@ class Client(object):
 
     # Date/time formats to be used when sending and parsing data from the API
     DATE_FORMAT = '%Y-%m-%d'
-    DATETIME_FORMAT = DATE_FORMAT + 'T%f'
+    DATETIME_FORMAT = DATE_FORMAT + 'T%H%M%S'
 
     def __init__(self, base_url, auth_token=None, timeout=0.25):
         """
