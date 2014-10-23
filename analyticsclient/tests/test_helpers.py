@@ -1,5 +1,5 @@
 from unittest import TestCase
-from analyticsclient.constants import activity_type, demographic
+from analyticsclient.constants import activity_type, demographic, education_level, gender
 
 
 class HelperTests(TestCase):
@@ -17,3 +17,20 @@ class HelperTests(TestCase):
         self.assertEqual('birth_year', demographic.BIRTH_YEAR)
         self.assertEqual('education', demographic.EDUCATION)
         self.assertEqual('gender', demographic.GENDER)
+
+    def test_education_type(self):
+        self.assertEqual('none', education_level.NONE)
+        self.assertEqual('other', education_level.OTHER)
+        self.assertEqual('primary', education_level.PRIMARY)
+        self.assertEqual('junior_secondary', education_level.JUNIOR_SECONDARY)
+        self.assertEqual('secondary', education_level.SECONDARY)
+        self.assertEqual('associates', education_level.ASSOCIATES)
+        self.assertEqual('bachelors', education_level.BACHELORS)
+        self.assertEqual('masters', education_level.MASTERS)
+        self.assertEqual('doctorate', education_level.DOCTORATE)
+
+    def test_gender_type(self):
+        self.assertEqual('female', gender.FEMALE)
+        self.assertEqual('male', gender.MALE)
+        self.assertEqual('other', gender.OTHER)
+        self.assertEqual('unknown', gender.UNKNOWN)
