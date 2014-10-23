@@ -1,5 +1,3 @@
-""" Enrollment education types.  """
-
 NONE = 'none'
 OTHER = 'other'
 PRIMARY = 'primary'
