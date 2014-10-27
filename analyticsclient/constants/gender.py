@@ -1,5 +1,3 @@
-""" Enrollment gender types.  """
-
 FEMALE = 'female'
 MALE = 'male'
 OTHER = 'other'
