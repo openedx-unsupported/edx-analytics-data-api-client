@@ -1,7 +1,6 @@
 ROOT = $(shell echo "$$PWD")
 COVERAGE = $(ROOT)/build/coverage
 PACKAGE = analyticsclient
-DATABASES = default analytics
 
 validate: test.requirements test quality
 
