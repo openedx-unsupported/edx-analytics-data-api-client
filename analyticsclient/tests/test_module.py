@@ -1,5 +1,6 @@
 import json
 import httpretty
+from analyticsclient.exceptions import InvalidRequestError
 
 from analyticsclient.tests import ClientTestCase
 
@@ -94,3 +95,19 @@ class ModulesTests(ClientTestCase):
         uri = self.get_api_url('problems/{0}/grade_distribution/'.format(self.module_id))
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.module.grade_distribution())
+
+    @httpretty.activate
+    def test_submission_counts(self):
+        self.assertRaises(InvalidRequestError, self.module.submission_counts, None)
+
+        body = [
+            {
+                'module_id': self.module_id,
+                'total': 100,
+                'correct': 80
+            }
+        ]
+
+        uri = self.get_api_url('problems/submission_counts/')
+        httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
+        self.assertEqual(body, self.module.submission_counts([self.module_id]))
