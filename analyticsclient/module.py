@@ -1,3 +1,5 @@
+import urllib
+
 import analyticsclient.constants.data_format as DF
 from analyticsclient.exceptions import InvalidRequestError
 
@@ -18,14 +20,20 @@ class Module(object):
         self.course_id = unicode(course_id)
         self.module_id = unicode(module_id)
 
-    def answer_distribution(self, data_format=DF.JSON):
+    def answer_distribution(self, data_format=DF.JSON, consolidate_variants=False):
         """
         Get answer distribution data for a module.
 
         Arguments:
             data_format (str): Format in which to return data (default is JSON)
+            consolidate_variants (bool): Consolidate erroneously random answers (default is False)
         """
-        path = 'problems/{0}/answer_distribution/'.format(self.module_id)
+        params = {
+            'consolidate_variants': consolidate_variants,
+        }
+
+        querystring = urllib.urlencode(params)
+        path = 'problems/{0}/answer_distribution/?{1}'.format(self.module_id, querystring)
 
         return self.client.get(path, data_format=data_format)
 
