@@ -1,12 +1,12 @@
 import json
+import re
 
 import httpretty
-import re
+
 from analyticsclient.constants import activity_type as at
 from analyticsclient.constants import data_format
 from analyticsclient.constants import demographic as demo
 from analyticsclient.exceptions import NotFoundError, InvalidRequestError
-
 from analyticsclient.tests import ClientTestCase
 
 
@@ -134,3 +134,16 @@ class CoursesTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, uri, body='not-json')
         self.course.enrollment(data_format=data_format.CSV)
         self.assertEquals(httpretty.last_request().headers['Accept'], 'text/csv')
+
+    @httpretty.activate
+    def test_problems(self):
+
+        body = [
+            {
+                'module_id': 'i4x://a/b/c'
+            }
+        ]
+
+        uri = self.get_api_url('courses/{0}/problems/'.format(self.course_id))
+        httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
+        self.assertEqual(body, self.course.problems())

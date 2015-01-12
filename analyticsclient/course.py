@@ -94,3 +94,13 @@ class Course(object):
 
         path = 'courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type)
         return self.client.get(path, data_format=data_format)
+
+    def problems(self, data_format=DF.JSON):
+        """
+        Get the problems for the course.
+
+        Arguments:
+            data_format (str): Format in which data should be returned
+        """
+        path = 'courses/{0}/problems/'.format(self.course_id)
+        return self.client.get(path, data_format=data_format)
