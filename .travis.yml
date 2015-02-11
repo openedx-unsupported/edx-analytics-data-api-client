@@ -6,3 +6,4 @@ install:
 script: make test quality
 after_success:
     - coveralls
+    - bash ./scripts/build-stats-to-datadog.sh
