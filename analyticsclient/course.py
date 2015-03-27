@@ -104,3 +104,37 @@ class Course(object):
         """
         path = 'courses/{0}/problems/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
+
+    def videos(self, data_format=DF.JSON):
+        """
+        Gets tracked videos for a given course.
+
+        Arguments:
+            data_format (str): Format in which data should be returned
+        """
+        path = 'courses/{0}/videos'.format(self.course_id)
+        return self.client.get(path, data_format=data_format)
+
+    def video_seek_times(self, video_id, data_format=DF.JSON):
+        """
+        Gets seek times for a given video.
+
+        Arguments:
+            video_id (str): String foramt of the video
+            data_format (str): Format in which data should be returned
+        """
+        path = 'courses/{0}/videos/{1}/seek_times'.format(
+            self.course_id,
+            video_id
+        )
+        return self.client.get(path, data_format=data_format)
+
+    def on_campus_data(self, data_format=DF.JSON):
+        """
+        Gets per student analytics data about a course.
+
+        Arguments:
+            data_format (str): Format in which data should be returned
+        """
+        path = 'courses/{0}/on_campus_student_data'.format(self.course_id)
+        return self.client.get(path, data_format=data_format)
