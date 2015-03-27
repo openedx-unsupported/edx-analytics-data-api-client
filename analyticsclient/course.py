@@ -107,7 +107,7 @@ class Course(object):
 
     def videos(self, data_format=DF.JSON):
         """
-        Gets tracked videos for a given course.
+        Get tracked videos for a given course.
 
         Arguments:
             data_format (str): Format in which data should be returned
@@ -117,7 +117,7 @@ class Course(object):
 
     def video_seek_times(self, video_id, data_format=DF.JSON):
         """
-        Gets seek times for a given video.
+        Get seek times for a given video.
 
         Arguments:
             video_id (str): String foramt of the video
@@ -131,7 +131,7 @@ class Course(object):
 
     def on_campus_data(self, data_format=DF.JSON):
         """
-        Gets per student analytics data about a course.
+        Get per student analytics data about a course.
 
         Arguments:
             data_format (str): Format in which data should be returned
