@@ -112,7 +112,7 @@ class Course(object):
         Arguments:
             data_format (str): Format in which data should be returned
         """
-        path = 'courses/{0}/videos'.format(self.course_id)
+        path = 'courses/{0}/videos/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
 
     def video_seek_times(self, video_id, data_format=DF.JSON):
@@ -123,7 +123,7 @@ class Course(object):
             video_id (str): String foramt of the video
             data_format (str): Format in which data should be returned
         """
-        path = 'courses/{0}/videos/{1}/seek_times'.format(
+        path = 'courses/{0}/videos/{1}/seek_times/'.format(
             self.course_id,
             video_id
         )
@@ -136,5 +136,5 @@ class Course(object):
         Arguments:
             data_format (str): Format in which data should be returned
         """
-        path = 'courses/{0}/on_campus_student_data'.format(self.course_id)
+        path = 'courses/{0}/on_campus_student_data/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
