@@ -105,7 +105,7 @@ class Course(object):
         path = 'courses/{0}/problems/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
 
-    def videos(self, data_format=DF.JSON):
+    def videos(self, start_date=None, end_date=None, data_format=DF.JSON):
         """
         Get tracked videos for a given course.
 
@@ -113,9 +113,22 @@ class Course(object):
             data_format (str): Format in which data should be returned
         """
         path = 'courses/{0}/videos/'.format(self.course_id)
+
+        params = {}
+        if start_date:
+            params['start_date'] = start_date
+
+        if end_date:
+            params['end_date'] = end_date
+
+        querystring = urllib.urlencode(params)
+        if querystring:
+            path += '?{0}'.format(querystring)
+
         return self.client.get(path, data_format=data_format)
 
-    def video_seek_times(self, video_id, data_format=DF.JSON):
+    def video_seek_times(self, video_id, start_date=None, end_date=None,
+                         data_format=DF.JSON):
         """
         Get seek times for a given video.
 
@@ -127,9 +140,24 @@ class Course(object):
             self.course_id,
             video_id
         )
+
+        params = {}
+        if start_date:
+            params['start_date'] = start_date
+
+        if end_date:
+            params['end_date'] = end_date
+
+        querystring = urllib.urlencode(params)
+        if querystring:
+            path += '?{0}'.format(querystring)
+
+
+
         return self.client.get(path, data_format=data_format)
 
-    def on_campus_data(self, data_format=DF.JSON):
+    def on_campus_data(self, start_date=None, end_date=None,
+                       data_format=DF.JSON):
         """
         Get per student analytics data about a course.
 
@@ -137,4 +165,16 @@ class Course(object):
             data_format (str): Format in which data should be returned
         """
         path = 'courses/{0}/on_campus_student_data/'.format(self.course_id)
+
+        params = {}
+        if start_date:
+            params['start_date'] = start_date
+
+        if end_date:
+            params['end_date'] = end_date
+
+        querystring = urllib.urlencode(params)
+        if querystring:
+            path += '?{0}'.format(querystring)
+
         return self.client.get(path, data_format=data_format)
