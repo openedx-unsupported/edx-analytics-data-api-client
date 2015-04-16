@@ -147,3 +147,22 @@ class CoursesTests(ClientTestCase):
         uri = self.get_api_url('courses/{0}/problems/'.format(self.course_id))
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.problems())
+
+    @httpretty.activate
+    def test_videos(self):
+
+        body = [
+            {
+                'pipeline_video_id': '0fac49ba',
+                'encoded_module_id': 'i4x-a-b-c',
+                'duration': 600,
+                'segment_length': 5,
+                'start_views': 50,
+                'end_views': 1,
+                'created': '2015-01-01T00:01:00'
+            }
+        ]
+
+        uri = self.get_api_url('courses/{0}/videos/'.format(self.course_id))
+        httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
+        self.assertEqual(body, self.course.videos())

@@ -49,3 +49,14 @@ class Module(object):
         path = 'problems/{0}/sequential_open_distribution/'.format(self.module_id)
 
         return self.client.get(path, data_format=data_format)
+
+    def video_timeline(self, data_format=DF.JSON):
+        """
+        Get video segments/timeline for a module.
+
+        Arguments:
+            data_format (str): Format in which to return data (default is JSON)
+        """
+        path = 'videos/{0}/timeline/'.format(self.module_id)
+
+        return self.client.get(path, data_format=data_format)
