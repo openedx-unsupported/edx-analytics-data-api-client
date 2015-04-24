@@ -104,6 +104,13 @@ class Course(object):
         """
         path = 'courses/{0}/problems/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
+    
+    def video_settings(self, data_format=DF.JSON):
+        """
+        Get the settings used by the pipeline to process the logs.
+        """
+        path = 'courses/{0}/videos/settings/'.format(self.course_id)
+        return self.client.get(path, data_format=data_format)
 
     def videos(self, start_date=None, end_date=None, data_format=DF.JSON):
         """
