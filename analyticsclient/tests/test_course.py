@@ -147,3 +147,84 @@ class CoursesTests(ClientTestCase):
         uri = self.get_api_url('courses/{0}/problems/'.format(self.course_id))
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.problems())
+
+    @httpretty.activate
+    def test_video_settings(self):
+
+        body = [
+            {
+                'type': 'INTEGER',
+                'name': 'seek_interval',
+                'value': '10',
+            }
+        ]
+
+        uri = self.get_api_url('courses/{0}/videos/settings/'.format(self.course_id))
+        httpretty.register_uri(
+            httpretty.GET,
+            uri,
+            body=json.dumps(body),
+        )
+        self.assertEqual(body, self.course.video_settings())
+
+    @httpretty.activate
+    def test_videos(self):
+
+        body = [
+            {
+                'video_id': 'i4x-DB-XML-video-vid-dtds_ids_and_idrefs',
+                'total_activity': 23,
+                'unique_users': 1,
+            },
+        ]
+
+        date = '2015-01-01'
+        uri = self.get_api_url('courses/{0}/videos/'.format(self.course_id))
+        httpretty.register_uri(
+            httpretty.GET,
+            '{0}?start_date={1}&end_date={1}'.format(uri, date),
+            body=json.dumps(body),
+        )
+        self.assertEqual(body, self.course.videos(start_date=date, end_date=date))
+
+    @httpretty.activate
+    def test_video_seek_times(self):
+
+        body = [
+            {
+                'seek_interval': 50,
+                'total_activity': 1,
+                'unique_daily_users': 1
+            },
+        ]
+
+        date = '2015-01-01'
+        video_id = 'i4x-DB-RD-video-vid-functional_dependencies-slice2'
+        uri = self.get_api_url('courses/{0}/videos/{1}/seek_times/'.format(self.course_id, video_id))
+        httpretty.register_uri(
+            httpretty.GET,
+            '{0}?video_id={1}&start_date={2}&end_date={2}'.format(uri, video_id, date),
+            body=json.dumps(body),
+        )
+        self.assertEqual(body, self.course.video_seek_times(video_id=video_id, start_date=date, end_date=date))
+
+    @httpretty.activate
+    def test_on_campus_data(self):
+
+        body = [
+            {
+                'username': 'user_77',
+                'total_video_activity': 1,
+                'unique_videos_watched': 1,
+                'total_video_watch_time': 10,
+            },
+        ]
+
+        date = '2015-01-01'
+        uri = self.get_api_url('courses/{0}/on_campus_student_data/'.format(self.course_id))
+        httpretty.register_uri(
+            httpretty.GET,
+            '{0}?start_date={1}&end_date={1}'.format(uri, date),
+            body=json.dumps(body),
+        )
+        self.assertEqual(body, self.course.on_campus_data(start_date=date, end_date=date))
