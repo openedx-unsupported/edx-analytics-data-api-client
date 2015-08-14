@@ -8,7 +8,7 @@ from analyticsclient.course import Course
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
 from analyticsclient.module import Module
 from analyticsclient.status import Status
-from analyticsclient.users import UserList, User
+from analyticsclient.users import User
 
 
 log = logging.getLogger(__name__)
@@ -42,7 +42,6 @@ class Client(object):
 
         self.status = Status(self)
         self.courses = lambda course_id: Course(self, course_id)
-        self.user_list = lambda: UserList(self)
         self.users = lambda user_id: User(self, user_id)
         self.modules = lambda course_id, module_id: Module(self, course_id, module_id)
 

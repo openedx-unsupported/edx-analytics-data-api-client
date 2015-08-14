@@ -105,6 +105,18 @@ class Course(object):
         path = 'courses/{0}/problems/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
 
+    def list_users(self, page=1, limit=100, data_format=DF.JSON):
+        """
+        Get the list of users.
+
+        Arguments:
+            page (int): Which page of results to return
+            limit (int): The maximum number of users to include on each page
+            data_format (str): Format in which data should be returned
+        """
+        path = 'courses/{}/users/?page={}&limit={}'.format(self.course_id, page, limit)
+        return self.client.get(path, data_format=data_format)
+
     def videos(self, data_format=DF.JSON):
         """
         Get the videos for the course.
