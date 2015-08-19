@@ -148,7 +148,6 @@ class CoursesTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.problems())
 
-
     def test_user_list(self):
         body = {
             "count": 1,
@@ -185,9 +184,6 @@ class CoursesTests(ClientTestCase):
 
         self.course.list_users(page=30, limit=10)
         self.assertEqual(httpretty.last_request().querystring, {"limit": ['10'], "page": ['30']})
-
-
-
 
     @httpretty.activate
     def test_videos(self):
