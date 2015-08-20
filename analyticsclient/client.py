@@ -42,7 +42,7 @@ class Client(object):
 
         self.status = Status(self)
         self.courses = lambda course_id: Course(self, course_id)
-        self.users = lambda user_id: User(self, user_id)
+        self.users = lambda username: User(self, username)
         self.modules = lambda course_id, module_id: Module(self, course_id, module_id)
 
     def get(self, resource, timeout=None, data_format=DF.JSON):
