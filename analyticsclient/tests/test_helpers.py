@@ -28,6 +28,7 @@ class HelperTests(TestCase):
         self.assertEqual('bachelors', education_level.BACHELORS)
         self.assertEqual('masters', education_level.MASTERS)
         self.assertEqual('doctorate', education_level.DOCTORATE)
+        self.assertEqual('unknown', education_level.UNKNOWN)
 
     def test_genders(self):
         self.assertEqual('female', gender.FEMALE)

@@ -8,6 +8,7 @@ from analyticsclient.course import Course
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
 from analyticsclient.module import Module
 from analyticsclient.status import Status
+from analyticsclient.users import User
 
 
 log = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ class Client(object):
     """
     Analytics API client.
 
-    The instance has attributes `status` and `courses` that provide access to instances of
+    The instance has attributes like `status` and `courses` that provide access to instances of
     :class: `~analyticsclient.status` and :class: `~analyticsclient.course`. This is the preferred (and only supported)
     way to get access to those classes and their methods.
     """
@@ -41,6 +42,7 @@ class Client(object):
 
         self.status = Status(self)
         self.courses = lambda course_id: Course(self, course_id)
+        self.users = lambda username: User(self, username)
         self.modules = lambda course_id, module_id: Module(self, course_id, module_id)
 
     def get(self, resource, timeout=None, data_format=DF.JSON):

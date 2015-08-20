@@ -148,6 +148,43 @@ class CoursesTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.problems())
 
+    def test_user_list(self):
+        body = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                {
+                    "id": 1,
+                    "username": "honor",
+                    "last_login": "2015-06-29T19:50:00Z",
+                    "date_joined": "2014-11-19T04:06:46Z",
+                    "is_staff": False,
+                    "email": "honor@example.com",
+                    "name": "honor",
+                    "gender": "unknown",
+                    "year_of_birth": None,
+                    "level_of_education": "unknown"
+                }
+            ]
+        }
+
+        uri = self.get_api_url('courses/{0}/users/'.format(self.course_id))
+        httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
+        self.assertEqual(body, self.course.list_users())
+
+    def test_user_list_pagination(self):
+        uri = self.get_api_url('courses/{0}/users/?'.format(self.course_id))
+        uri = re.compile(r'^' + re.escape(uri) + r'.*$')
+        httpretty.register_uri(httpretty.GET, uri, body="{}")
+
+        self.course.list_users()
+        self.assertIsNotNone(httpretty.last_request())
+        self.assertEqual(httpretty.last_request().querystring, {"limit": ['100'], "page": ['1']})
+
+        self.course.list_users(page=30, limit=10)
+        self.assertEqual(httpretty.last_request().querystring, {"limit": ['10'], "page": ['30']})
+
     @httpretty.activate
     def test_videos(self):
 
