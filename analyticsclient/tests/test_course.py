@@ -149,6 +149,19 @@ class CoursesTests(ClientTestCase):
         self.assertEqual(body, self.course.problems())
 
     @httpretty.activate
+    def test_problems_and_tags(self):
+
+        body = [
+            {
+                'module_id': 'i4x://a/b/c'
+            }
+        ]
+
+        uri = self.get_api_url('courses/{0}/problems_and_tags/'.format(self.course_id))
+        httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
+        self.assertEqual(body, self.course.problems_and_tags())
+
+    @httpretty.activate
     def test_videos(self):
 
         body = [
