@@ -21,6 +21,11 @@ class Course(object):
         self.client = client
         self.course_id = unicode(course_id)
 
+    def views(self, data_format=DF.JSON):
+        path = 'courses/{0}/views/'.format(self.course_id)
+        return self.client.get(path, data_format=data_format)
+
+
     def enrollment(self, demographic=None, start_date=None, end_date=None, data_format=DF.JSON):
         """
         Get course enrollment data.
