@@ -37,6 +37,7 @@ class HelperTests(TestCase):
 
     def test_enrollment_modes(self):
         self.assertEqual('audit', enrollment_modes.AUDIT)
+        self.assertEqual('credit', enrollment_modes.CREDIT)
         self.assertEqual('honor', enrollment_modes.HONOR)
         self.assertEqual('professional', enrollment_modes.PROFESSIONAL)
         self.assertEqual('verified', enrollment_modes.VERIFIED)
