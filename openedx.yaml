@@ -4,6 +4,6 @@
 nick: adap
 oeps: {}
 openedx-release: {parent-repo: edx/edx-analytics-dashboard}
-owner: MUST FILL IN OWNER
+owner: edx/analytics
 tags: [analytics]
 track-pulls: true
