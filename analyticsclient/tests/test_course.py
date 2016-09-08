@@ -162,6 +162,22 @@ class CoursesTests(ClientTestCase):
         self.assertEqual(body, self.course.problems_and_tags())
 
     @httpretty.activate
+    def test_reports(self):
+
+        body = {
+            "last_modified": "2016-08-12T043411",
+            "file_size": 3419,
+            "course_id": "Example_Demo_2016-08",
+            "expiration_date": "2016-08-12T233704",
+            "download_url": "https://bucket.s3.amazonaws.com/foo_bar_1_problem_response.csv?Signature=123&Expires=456",
+            "report_name": "problem_response"
+        }
+
+        uri = self.get_api_url('courses/{0}/reports/problem_response/'.format(self.course_id))
+        httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
+        self.assertEqual(body, self.course.reports("problem_response"))
+
+    @httpretty.activate
     def test_videos(self):
 
         body = [
