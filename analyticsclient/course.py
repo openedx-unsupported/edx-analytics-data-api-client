@@ -6,7 +6,7 @@ from analyticsclient.exceptions import InvalidRequestError
 
 
 class Course(object):
-    """ Course-related analytics. """
+    """Course-related analytics."""
 
     def __init__(self, client, course_id):
         """
