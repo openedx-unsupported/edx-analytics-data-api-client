@@ -2,7 +2,7 @@ import analyticsclient.constants.data_format as DF
 
 
 class Module(object):
-    """ Module related analytics data. """
+    """Module related analytics data."""
 
     def __init__(self, client, course_id, module_id):
         """

@@ -1,22 +1,22 @@
 class ClientError(Exception):
-    """ Common base class for all client errors. """
+    """Common base class for all client errors."""
 
     pass
 
 
 class NotFoundError(ClientError):
-    """ URL was not found. """
+    """URL was not found."""
 
     pass
 
 
 class InvalidRequestError(ClientError):
-    """ The API request was invalid. """
+    """The API request was invalid."""
 
     pass
 
 
 class TimeoutError(ClientError):
-    """ The API server did not respond before the timeout expired. """
+    """The API server did not respond before the timeout expired."""
 
     pass

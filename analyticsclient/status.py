@@ -2,7 +2,7 @@ from analyticsclient.exceptions import ClientError
 
 
 class Status(object):
-    """ API server status. """
+    """API server status."""
 
     def __init__(self, client):
         """
