@@ -3,7 +3,6 @@
 
 nick: adap
 oeps: {}
-openedx-release: {parent-repo: edx/edx-analytics-dashboard}
 owner: edx/analytics
 tags: [analytics]
 track-pulls: true
