@@ -33,6 +33,7 @@ class APIListTestCase(object):
 
     # Override in the subclass:
     endpoint = 'list'
+    id_field = 'id'
 
     def setUp(self):
         """Set up the test case."""
@@ -74,9 +75,9 @@ class APIListTestCase(object):
         ['edx/demo/course'],
         ['edx/demo/course', 'another/demo/course']
     )
-    def test_courses_ids(self, course_ids):
-        """Endpoint can be called with course IDs."""
-        self.kwarg_test(course_ids=course_ids)
+    def test_courses_ids(self, ids):
+        """Endpoint can be called with IDs."""
+        self.kwarg_test(**{self.id_field: ids})
 
     @ddt.data(
         ['course_id'],
@@ -100,6 +101,6 @@ class APIListTestCase(object):
          ['created', 'pacing_type'])
     )
     @ddt.unpack
-    def test_all_parameters(self, course_ids, fields, exclude):
+    def test_all_parameters(self, ids, fields, exclude):
         """Endpoint can be called with all parameters."""
-        self.kwarg_test(course_ids=course_ids, fields=fields, exclude=exclude)
+        self.kwarg_test(**{self.id_field: ids, 'fields': fields, 'exclude': exclude})

@@ -8,6 +8,7 @@ from analyticsclient.tests import ClientTestCase, APIListTestCase
 class CourseSummariesTests(APIListTestCase, ClientTestCase):
 
     endpoint = 'course_summaries'
+    id_field = 'course_ids'
 
     @ddt.data(
         ['123'],
