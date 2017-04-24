@@ -1,6 +1,6 @@
 import ddt
 
-from analyticsclient.tests import ClientTestCase, APIListTestCase
+from analyticsclient.tests import APIListTestCase, ClientTestCase
 
 
 @ddt.ddt

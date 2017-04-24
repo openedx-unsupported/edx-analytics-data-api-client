@@ -6,9 +6,9 @@ from analyticsclient.constants import data_format as DF
 
 from analyticsclient.course import Course
 from analyticsclient.course_summaries import CourseSummaries
-from analyticsclient.programs import Programs
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
 from analyticsclient.module import Module
+from analyticsclient.programs import Programs
 from analyticsclient.status import Status
 
 
