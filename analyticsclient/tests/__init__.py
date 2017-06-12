@@ -34,6 +34,7 @@ class APIListTestCase(object):
     # Override in the subclass:
     endpoint = 'list'
     id_field = 'id'
+    uses_post_method = False
 
     def setUp(self):
         """Set up the test case."""
@@ -58,17 +59,25 @@ class APIListTestCase(object):
     def kwarg_test(self, **kwargs):
         """Construct URL with given query parameters and check if it is what we expect."""
         httpretty.reset()
-        uri_template = '{uri}?'
-        for key in kwargs:
-            uri_template += '%s={%s}' % (key, key)
-        uri = uri_template.format(uri=self.base_uri, **kwargs)
-        httpretty.register_uri(httpretty.GET, uri, body='{}')
-        getattr(self.client_class, self.endpoint)(**kwargs)
-        self.verify_last_querystring_equal(self.expected_query(**kwargs))
+        if self.uses_post_method:
+            httpretty.register_uri(httpretty.POST, self.base_uri, body='{}')
+            getattr(self.client_class, self.endpoint)(**kwargs)
+            self.assertDictEqual(httpretty.last_request().parsed_body or {}, kwargs)
+        else:
+            uri_template = '{uri}?'
+            for key in kwargs:
+                uri_template += '%s={%s}' % (key, key)
+            uri = uri_template.format(uri=self.base_uri, **kwargs)
+            httpretty.register_uri(httpretty.GET, uri, body='{}')
+            getattr(self.client_class, self.endpoint)(**kwargs)
+            self.verify_last_querystring_equal(self.expected_query(**kwargs))
 
     def test_all_items_url(self):
         """Endpoint can be called without parameters."""
-        httpretty.register_uri(httpretty.GET, self.base_uri, body='{}')
+        httpretty.register_uri(
+            httpretty.POST if self.uses_post_method else httpretty.GET,
+            self.base_uri, body='{}'
+        )
         getattr(self.client_class, self.endpoint)()
 
     @ddt.data(

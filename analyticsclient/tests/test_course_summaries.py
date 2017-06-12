@@ -9,6 +9,7 @@ class CourseSummariesTests(APIListTestCase, ClientTestCase):
 
     endpoint = 'course_summaries'
     id_field = 'course_ids'
+    uses_post_method = True
 
     @ddt.data(
         ['123'],
