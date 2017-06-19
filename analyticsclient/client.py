@@ -28,6 +28,9 @@ class Client(object):
     DATE_FORMAT = '%Y-%m-%d'
     DATETIME_FORMAT = DATE_FORMAT + 'T%H%M%S'
 
+    METHOD_GET = 'GET'
+    METHOD_POST = 'POST'
+
     def __init__(self, base_url, auth_token=None, timeout=0.25):
         """
         Initialize the client.
@@ -63,17 +66,37 @@ class Client(object):
         Raises: ClientError if the resource cannot be retrieved for any reason.
 
         """
-        response = self._request(resource, timeout=timeout, data_format=data_format)
+        return self._get_or_post(
+            self.METHOD_GET,
+            resource,
+            timeout=timeout,
+            data_format=data_format
+        )
 
-        if data_format == DF.CSV:
-            return response.text
+    def post(self, resource, post_data=None, timeout=None, data_format=DF.JSON):
+        """
+        Retrieve the data for POST request.
 
-        try:
-            return response.json()
-        except ValueError:
-            message = 'Unable to decode JSON response'
-            log.exception(message)
-            raise ClientError(message)
+        Arguments:
+
+            resource (str): Path in the form of slash separated strings.
+            post_data (dict): Dictionary containing POST data.
+            timeout (float): Continue to attempt to retrieve a resource for this many seconds before giving up and
+                raising an error.
+            data_format (str): Format in which data should be returned
+
+        Returns: API response data in specified data_format
+
+        Raises: ClientError if the resource cannot be retrieved for any reason.
+
+        """
+        return self._get_or_post(
+            self.METHOD_POST,
+            resource,
+            post_data=post_data,
+            timeout=timeout,
+            data_format=data_format
+        )
 
     def has_resource(self, resource, timeout=None):
         """
@@ -91,13 +114,32 @@ class Client(object):
 
         """
         try:
-            self._request(resource, timeout=timeout)
+            self._request(self.METHOD_GET, resource, timeout=timeout)
             return True
         except ClientError:
             return False
 
+    def _get_or_post(self, method, resource, post_data=None, timeout=None, data_format=DF.JSON):
+        response = self._request(
+            method,
+            resource,
+            post_data=post_data,
+            timeout=timeout,
+            data_format=data_format
+        )
+
+        if data_format == DF.CSV:
+            return response.text
+
+        try:
+            return response.json()
+        except ValueError:
+            message = 'Unable to decode JSON response'
+            log.exception(message)
+            raise ClientError(message)
+
     # pylint: disable=no-member
-    def _request(self, resource, timeout=None, data_format=DF.JSON):
+    def _request(self, method, resource, post_data=None, timeout=None, data_format=DF.JSON):
         if timeout is None:
             timeout = self.timeout
 
@@ -114,7 +156,17 @@ class Client(object):
 
         try:
             uri = '{0}/{1}'.format(self.base_url, resource)
-            response = requests.get(uri, headers=headers, timeout=timeout)
+
+            if method == self.METHOD_GET:
+                response = requests.get(uri, headers=headers, timeout=timeout)
+            elif method == self.METHOD_POST:
+                response = requests.post(uri, data=(post_data or {}), headers=headers, timeout=timeout)
+            else:
+                raise ValueError(
+                    'Invalid \'method\' argument: expected {0} or {1}, got {2}'.format(
+                        self.METHOD_GET, self.METHOD_POST, method
+                    )
+                )
 
             status = response.status_code
             if status != requests.codes.ok:

@@ -46,6 +46,11 @@ class ClientTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, self.test_url, body=json.dumps(data))
         self.assertEquals(self.client.get(self.test_endpoint), data)
 
+    def test_post(self):
+        data = {'foo': 'bar'}
+        httpretty.register_uri(httpretty.POST, self.test_url, body=json.dumps(data))
+        self.assertEquals(self.client.post(self.test_endpoint), data)
+
     def test_get_invalid_response_body(self):
         """ Verify that client raises a ClientError if the response body cannot be properly parsed. """
 
@@ -71,7 +76,13 @@ class ClientTests(ClientTestCase):
         timeout = None
         headers = {'Accept': 'application/json'}
 
-        self.assertRaises(TimeoutError, self.client._request, self.test_endpoint, timeout=timeout)
+        self.assertRaises(
+            TimeoutError,
+            self.client._request,
+            self.client.METHOD_GET,
+            self.test_endpoint,
+            timeout=timeout
+        )
         msg = 'Response from {0} exceeded timeout of {1}s.'.format(self.test_endpoint, self.client.timeout)
         lc.check(('analyticsclient.client', 'ERROR', msg))
         lc.clear()
@@ -79,7 +90,13 @@ class ClientTests(ClientTestCase):
         mock_get.reset_mock()
 
         timeout = 10
-        self.assertRaises(TimeoutError, self.client._request, self.test_endpoint, timeout=timeout)
+        self.assertRaises(
+            TimeoutError,
+            self.client._request,
+            self.client.METHOD_GET,
+            self.test_endpoint,
+            timeout=timeout
+        )
         mock_get.assert_called_once_with(url, headers=headers, timeout=timeout)
         msg = 'Response from {0} exceeded timeout of {1}s.'.format(self.test_endpoint, timeout)
         lc.check(('analyticsclient.client', 'ERROR', msg))
@@ -100,3 +117,11 @@ class ClientTests(ClientTestCase):
         response = self.client.get(self.test_endpoint, data_format=data_format.JSON)
         self.assertEquals(httpretty.last_request().headers['Accept'], 'application/json')
         self.assertDictEqual(response, {})
+
+    def test_unsupported_method(self):
+        self.assertRaises(
+            ValueError,
+            self.client._request,
+            'PATCH',
+            self.test_endpoint
+        )

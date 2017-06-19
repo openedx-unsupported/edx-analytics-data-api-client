@@ -1,5 +1,3 @@
-import urllib
-
 import analyticsclient.constants.data_format as DF
 
 
@@ -27,15 +25,12 @@ class CourseSummaries(object):
             exclude: Array of fields to exclude from response. Default is to not exclude any fields.
             programs: If included in the query parameters, will include the programs array in the response.
         """
-        query_params = {}
-        for query_arg, data in zip(['course_ids', 'fields', 'exclude', 'programs'],
-                                   [course_ids, fields, exclude, programs]):
+        post_data = {}
+        for param_name, data in zip(['course_ids', 'fields', 'exclude', 'programs'],
+                                    [course_ids, fields, exclude, programs]):
             if data:
-                query_params[query_arg] = ','.join(data)
+                post_data[param_name] = data
 
         path = 'course_summaries/'
-        querystring = urllib.urlencode(query_params)
-        if querystring:
-            path += '?{0}'.format(querystring)
 
-        return self.client.get(path, data_format=data_format)
+        return self.client.post(path, post_data=post_data, data_format=data_format)
