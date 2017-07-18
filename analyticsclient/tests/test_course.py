@@ -3,9 +3,7 @@ import re
 
 import httpretty
 
-from analyticsclient.constants import activity_type as at
-from analyticsclient.constants import data_format
-from analyticsclient.constants import demographic as demo
+from analyticsclient.constants import activity_types, data_formats, demographics
 from analyticsclient.exceptions import NotFoundError, InvalidRequestError
 from analyticsclient.tests import ClientTestCase
 
@@ -82,10 +80,10 @@ class CoursesTests(ClientTestCase):
         self.assertDictEqual(body, self.course.recent_activity(activity_type))
 
     def test_recent_activity(self):
-        self.assertRecentActivityResponseData(self.course, at.ANY)
-        self.assertRecentActivityResponseData(self.course, at.ATTEMPTED_PROBLEM)
-        self.assertRecentActivityResponseData(self.course, at.PLAYED_VIDEO)
-        self.assertRecentActivityResponseData(self.course, at.POSTED_FORUM)
+        self.assertRecentActivityResponseData(self.course, activity_types.ANY)
+        self.assertRecentActivityResponseData(self.course, activity_types.ATTEMPTED_PROBLEM)
+        self.assertRecentActivityResponseData(self.course, activity_types.PLAYED_VIDEO)
+        self.assertRecentActivityResponseData(self.course, activity_types.POSTED_FORUM)
 
     def test_not_found(self):
         """ Course calls should raise a NotFoundError when provided with an invalid course. """
@@ -96,8 +94,8 @@ class CoursesTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, uri, status=404)
 
         course = self.client.courses(course_id)
-        self.assertRaises(NotFoundError, course.recent_activity, at.ANY)
-        self.assertRaises(NotFoundError, course.enrollment, demo.EDUCATION)
+        self.assertRaises(NotFoundError, course.recent_activity, activity_types.ANY)
+        self.assertRaises(NotFoundError, course.enrollment, demographics.EDUCATION)
 
     def test_invalid_parameter(self):
         """ Course calls should raise a InvalidRequestError when parameters are invalid. """
@@ -111,17 +109,17 @@ class CoursesTests(ClientTestCase):
 
     def test_enrollment(self):
         self.assertCorrectEnrollmentUrl(self.course, None)
-        self.assertCorrectEnrollmentUrl(self.course, demo.BIRTH_YEAR)
-        self.assertCorrectEnrollmentUrl(self.course, demo.EDUCATION)
-        self.assertCorrectEnrollmentUrl(self.course, demo.GENDER)
-        self.assertCorrectEnrollmentUrl(self.course, demo.LOCATION)
+        self.assertCorrectEnrollmentUrl(self.course, demographics.BIRTH_YEAR)
+        self.assertCorrectEnrollmentUrl(self.course, demographics.EDUCATION)
+        self.assertCorrectEnrollmentUrl(self.course, demographics.GENDER)
+        self.assertCorrectEnrollmentUrl(self.course, demographics.LOCATION)
 
     def test_activity(self):
         self.assertRaises(InvalidRequestError, self.assertCorrectActivityUrl, self.course, None)
-        self.assertCorrectActivityUrl(self.course, at.ANY)
-        self.assertCorrectActivityUrl(self.course, at.ATTEMPTED_PROBLEM)
-        self.assertCorrectActivityUrl(self.course, at.PLAYED_VIDEO)
-        self.assertCorrectActivityUrl(self.course, at.POSTED_FORUM)
+        self.assertCorrectActivityUrl(self.course, activity_types.ANY)
+        self.assertCorrectActivityUrl(self.course, activity_types.ATTEMPTED_PROBLEM)
+        self.assertCorrectActivityUrl(self.course, activity_types.PLAYED_VIDEO)
+        self.assertCorrectActivityUrl(self.course, activity_types.POSTED_FORUM)
 
     def test_enrollment_data_format(self):
         uri = self.get_api_url('courses/{0}/enrollment/'.format(self.course.course_id))
@@ -132,7 +130,7 @@ class CoursesTests(ClientTestCase):
         self.assertEquals(httpretty.last_request().headers['Accept'], 'application/json')
 
         httpretty.register_uri(httpretty.GET, uri, body='not-json')
-        self.course.enrollment(data_format=data_format.CSV)
+        self.course.enrollment(data_format=data_formats.CSV)
         self.assertEquals(httpretty.last_request().headers['Accept'], 'text/csv')
 
     @httpretty.activate

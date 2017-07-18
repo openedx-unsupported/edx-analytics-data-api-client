@@ -1,11 +1,11 @@
 import urllib
 import warnings
-import analyticsclient.constants.activity_type as AT
-import analyticsclient.constants.data_format as DF
+from analyticsclient.base import PostableCourseIDsEndpoint
+from analyticsclient.constants import activity_types, data_formats
 from analyticsclient.exceptions import InvalidRequestError
 
 
-class Course(object):
+class Course(PostableCourseIDsEndpoint):
     """Course-related analytics."""
 
     def __init__(self, client, course_id):
@@ -18,10 +18,10 @@ class Course(object):
             course_id (str): String identifying the course (e.g. edX/DemoX/Demo_Course)
 
         """
-        self.client = client
+        super(Course, self).__init__(client)
         self.course_id = unicode(course_id)
 
-    def enrollment(self, demographic=None, start_date=None, end_date=None, data_format=DF.JSON):
+    def enrollment(self, demographic=None, start_date=None, end_date=None, data_format=data_formats.JSON):
         """
         Get course enrollment data.
 
@@ -55,7 +55,7 @@ class Course(object):
 
         return self.client.get(path, data_format=data_format)
 
-    def activity(self, activity_type=AT.ANY, start_date=None, end_date=None, data_format=DF.JSON):
+    def activity(self, activity_type=activity_types.ANY, start_date=None, end_date=None, data_format=data_formats.JSON):
         """
         Get the course student activity.
 
@@ -82,7 +82,7 @@ class Course(object):
 
         return self.client.get(path, data_format=data_format)
 
-    def recent_activity(self, activity_type=AT.ANY, data_format=DF.JSON):
+    def recent_activity(self, activity_type=activity_types.ANY, data_format=data_formats.JSON):
         """
         Get the recent course activity.
 
@@ -95,7 +95,7 @@ class Course(object):
         path = 'courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type)
         return self.client.get(path, data_format=data_format)
 
-    def problems(self, data_format=DF.JSON):
+    def problems(self, data_format=data_formats.JSON):
         """
         Get the problems for the course.
 
@@ -105,7 +105,7 @@ class Course(object):
         path = 'courses/{0}/problems/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
 
-    def problems_and_tags(self, data_format=DF.JSON):
+    def problems_and_tags(self, data_format=data_formats.JSON):
         """
         Get the problems for the course with assigned tags.
 
@@ -115,7 +115,7 @@ class Course(object):
         path = 'courses/{0}/problems_and_tags/'.format(self.course_id)
         return self.client.get(path, data_format=data_format)
 
-    def reports(self, report_name, data_format=DF.JSON):
+    def reports(self, report_name, data_format=data_formats.JSON):
         """
         Get CSV download information for a particular report in the course.
 
@@ -125,7 +125,7 @@ class Course(object):
         path = 'courses/{0}/reports/{1}/'.format(self.course_id, report_name)
         return self.client.get(path, data_format=data_format)
 
-    def videos(self, data_format=DF.JSON):
+    def videos(self, data_format=data_formats.JSON):
         """
         Get the videos for the course.
 

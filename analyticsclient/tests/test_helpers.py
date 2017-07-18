@@ -1,5 +1,5 @@
 from unittest import TestCase
-from analyticsclient.constants import activity_type, demographic, education_level, gender, enrollment_modes
+from analyticsclient.constants import activity_types, demographics, education_levels, genders, enrollment_modes
 
 
 class HelperTests(TestCase):
@@ -8,32 +8,32 @@ class HelperTests(TestCase):
     """
 
     def test_activity_types(self):
-        self.assertEqual('any', activity_type.ANY)
-        self.assertEqual('attempted_problem', activity_type.ATTEMPTED_PROBLEM)
-        self.assertEqual('played_video', activity_type.PLAYED_VIDEO)
-        self.assertEqual('posted_forum', activity_type.POSTED_FORUM)
+        self.assertEqual('any', activity_types.ANY)
+        self.assertEqual('attempted_problem', activity_types.ATTEMPTED_PROBLEM)
+        self.assertEqual('played_video', activity_types.PLAYED_VIDEO)
+        self.assertEqual('posted_forum', activity_types.POSTED_FORUM)
 
     def test_demographics(self):
-        self.assertEqual('birth_year', demographic.BIRTH_YEAR)
-        self.assertEqual('education', demographic.EDUCATION)
-        self.assertEqual('gender', demographic.GENDER)
+        self.assertEqual('birth_year', demographics.BIRTH_YEAR)
+        self.assertEqual('education', demographics.EDUCATION)
+        self.assertEqual('gender', demographics.GENDER)
 
     def test_education_levels(self):
-        self.assertEqual('none', education_level.NONE)
-        self.assertEqual('other', education_level.OTHER)
-        self.assertEqual('primary', education_level.PRIMARY)
-        self.assertEqual('junior_secondary', education_level.JUNIOR_SECONDARY)
-        self.assertEqual('secondary', education_level.SECONDARY)
-        self.assertEqual('associates', education_level.ASSOCIATES)
-        self.assertEqual('bachelors', education_level.BACHELORS)
-        self.assertEqual('masters', education_level.MASTERS)
-        self.assertEqual('doctorate', education_level.DOCTORATE)
+        self.assertEqual('none', education_levels.NONE)
+        self.assertEqual('other', education_levels.OTHER)
+        self.assertEqual('primary', education_levels.PRIMARY)
+        self.assertEqual('junior_secondary', education_levels.JUNIOR_SECONDARY)
+        self.assertEqual('secondary', education_levels.SECONDARY)
+        self.assertEqual('associates', education_levels.ASSOCIATES)
+        self.assertEqual('bachelors', education_levels.BACHELORS)
+        self.assertEqual('masters', education_levels.MASTERS)
+        self.assertEqual('doctorate', education_levels.DOCTORATE)
 
     def test_genders(self):
-        self.assertEqual('female', gender.FEMALE)
-        self.assertEqual('male', gender.MALE)
-        self.assertEqual('other', gender.OTHER)
-        self.assertEqual('unknown', gender.UNKNOWN)
+        self.assertEqual('female', genders.FEMALE)
+        self.assertEqual('male', genders.MALE)
+        self.assertEqual('other', genders.OTHER)
+        self.assertEqual('unknown', genders.UNKNOWN)
 
     def test_enrollment_modes(self):
         self.assertEqual('audit', enrollment_modes.AUDIT)
