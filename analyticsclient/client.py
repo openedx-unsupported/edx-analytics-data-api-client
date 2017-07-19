@@ -50,7 +50,7 @@ class Client(object):
         self.courses = lambda course_id: Course(self, course_id)
         self.modules = lambda course_id, module_id: Module(self, course_id, module_id)
 
-    def get(self, resource, timeout=None, data_format=DF.JSON):
+    def get(self, resource, data=None, timeout=None, data_format=DF.JSON):
         """
         Retrieve the data for a resource.
 
@@ -69,18 +69,19 @@ class Client(object):
         return self._get_or_post(
             self.METHOD_GET,
             resource,
+            data=data,
             timeout=timeout,
             data_format=data_format
         )
 
-    def post(self, resource, post_data=None, timeout=None, data_format=DF.JSON):
+    def post(self, resource, data=None, timeout=None, data_format=DF.JSON):
         """
         Retrieve the data for POST request.
 
         Arguments:
 
             resource (str): Path in the form of slash separated strings.
-            post_data (dict): Dictionary containing POST data.
+            data (dict): Dictionary containing POST data.
             timeout (float): Continue to attempt to retrieve a resource for this many seconds before giving up and
                 raising an error.
             data_format (str): Format in which data should be returned
@@ -93,7 +94,7 @@ class Client(object):
         return self._get_or_post(
             self.METHOD_POST,
             resource,
-            post_data=post_data,
+            data=data,
             timeout=timeout,
             data_format=data_format
         )
@@ -119,11 +120,11 @@ class Client(object):
         except ClientError:
             return False
 
-    def _get_or_post(self, method, resource, post_data=None, timeout=None, data_format=DF.JSON):
+    def _get_or_post(self, method, resource, data=None, timeout=None, data_format=DF.JSON):
         response = self._request(
             method,
             resource,
-            post_data=post_data,
+            data=data,
             timeout=timeout,
             data_format=data_format
         )
@@ -139,7 +140,7 @@ class Client(object):
             raise ClientError(message)
 
     # pylint: disable=no-member
-    def _request(self, method, resource, post_data=None, timeout=None, data_format=DF.JSON):
+    def _request(self, method, resource, data=None, timeout=None, data_format=DF.JSON):
         if timeout is None:
             timeout = self.timeout
 
@@ -158,9 +159,10 @@ class Client(object):
             uri = '{0}/{1}'.format(self.base_url, resource)
 
             if method == self.METHOD_GET:
-                response = requests.get(uri, headers=headers, timeout=timeout)
+                params = self._data_to_get_params(data or {})
+                response = requests.get(uri, params=params, headers=headers, timeout=timeout)
             elif method == self.METHOD_POST:
-                response = requests.post(uri, data=(post_data or {}), headers=headers, timeout=timeout)
+                response = requests.post(uri, data=(data or {}), headers=headers, timeout=timeout)
             else:
                 raise ValueError(
                     'Invalid \'method\' argument: expected {0} or {1}, got {2}'.format(
@@ -194,3 +196,15 @@ class Client(object):
             message = 'Unable to retrieve resource'
             log.exception(message)
             raise ClientError('{0} "{1}"'.format(message, resource))
+
+    @staticmethod
+    def _data_to_get_params(data):
+        return {
+            key: (
+                ','.join(value)
+                if type(value) == list
+                else str(value)
+            )
+            for key, value in data.iteritems()
+        }
+
