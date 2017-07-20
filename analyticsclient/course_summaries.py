@@ -1,3 +1,4 @@
+from analyticsclient.constants import MAX_NUM_COURSE_IDS_FOR_GET
 import analyticsclient.constants.data_format as DF
 
 
@@ -5,7 +6,6 @@ class CourseSummaries(object):
     """Course summaries."""
 
     PATH = 'course_summaries/'
-    MAX_NUM_COURSE_IDS_FOR_GET = 10
 
     def __init__(self, client):
         """
@@ -62,7 +62,7 @@ class CourseSummaries(object):
         }
         request_method = (
             self.client.post
-            if len(course_ids or []) > self.MAX_NUM_COURSE_IDS_FOR_GET
+            if len(course_ids or []) > MAX_NUM_COURSE_IDS_FOR_GET
             else self.client.get
         )
         return request_method(self.PATH, data=data, data_format=data_format)
