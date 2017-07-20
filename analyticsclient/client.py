@@ -5,6 +5,7 @@ import requests.exceptions
 from analyticsclient.constants import data_format as DF
 
 from analyticsclient.course import Course
+from analyticsclient.course_aggregate_data import CourseAggregateData
 from analyticsclient.course_summaries import CourseSummaries
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
 from analyticsclient.module import Module
@@ -46,6 +47,7 @@ class Client(object):
 
         self.status = Status(self)
         self.course_summaries = lambda: CourseSummaries(self)
+        self.course_aggregate_data = lambda: CourseAggregateData(self)
         self.programs = lambda: Programs(self)
         self.courses = lambda course_id: Course(self, course_id)
         self.modules = lambda course_id, module_id: Module(self, course_id, module_id)
