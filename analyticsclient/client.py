@@ -2,9 +2,11 @@ import logging
 
 import requests
 import requests.exceptions
+from analyticsclient.constants import http_methods
 from analyticsclient.constants import data_format as DF
 
 from analyticsclient.course import Course
+from analyticsclient.course_aggregate_data import CourseAggregateData
 from analyticsclient.course_summaries import CourseSummaries
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
 from analyticsclient.module import Module
@@ -28,9 +30,6 @@ class Client(object):
     DATE_FORMAT = '%Y-%m-%d'
     DATETIME_FORMAT = DATE_FORMAT + 'T%H%M%S'
 
-    METHOD_GET = 'GET'
-    METHOD_POST = 'POST'
-
     def __init__(self, base_url, auth_token=None, timeout=0.25):
         """
         Initialize the client.
@@ -46,17 +45,32 @@ class Client(object):
 
         self.status = Status(self)
         self.course_summaries = lambda: CourseSummaries(self)
+        self.course_aggregate_data = lambda: CourseAggregateData(self)
         self.programs = lambda: Programs(self)
         self.courses = lambda course_id: Course(self, course_id)
         self.modules = lambda course_id, module_id: Module(self, course_id, module_id)
 
-    def get(self, resource, timeout=None, data_format=DF.JSON):
+    def get(self, *args, **kwargs):
         """
         Retrieve the data for a resource.
 
+        Equivalent to `request(http_methods.GET, ...)`
+
+        Returns: API response data in specified data_format
+
+        Raises: ClientError if the resource cannot be retrieved for any reason.
+        """
+        return self.request(http_methods.GET, *args, **kwargs)
+
+    def request(self, method, resource, data=None, timeout=None, data_format=DF.JSON):
+        """
+        Retrieve the from an HTTP request.
+
         Arguments:
 
+            method (http_method): HTTP method. Only GET and POST are supported currenly.
             resource (str): Path in the form of slash separated strings.
+            data (dict): Dictionary containing POST data.
             timeout (float): Continue to attempt to retrieve a resource for this many seconds before giving up and
                 raising an error.
             data_format (str): Format in which data should be returned
@@ -66,37 +80,23 @@ class Client(object):
         Raises: ClientError if the resource cannot be retrieved for any reason.
 
         """
-        return self._get_or_post(
-            self.METHOD_GET,
-            resource,
+        response = self._request(
+            method=method,
+            resource=resource,
+            data=data,
             timeout=timeout,
             data_format=data_format
         )
 
-    def post(self, resource, post_data=None, timeout=None, data_format=DF.JSON):
-        """
-        Retrieve the data for POST request.
+        if data_format == DF.CSV:
+            return response.text
 
-        Arguments:
-
-            resource (str): Path in the form of slash separated strings.
-            post_data (dict): Dictionary containing POST data.
-            timeout (float): Continue to attempt to retrieve a resource for this many seconds before giving up and
-                raising an error.
-            data_format (str): Format in which data should be returned
-
-        Returns: API response data in specified data_format
-
-        Raises: ClientError if the resource cannot be retrieved for any reason.
-
-        """
-        return self._get_or_post(
-            self.METHOD_POST,
-            resource,
-            post_data=post_data,
-            timeout=timeout,
-            data_format=data_format
-        )
+        try:
+            return response.json()
+        except ValueError:
+            message = 'Unable to decode JSON response'
+            log.exception(message)
+            raise ClientError(message)
 
     def has_resource(self, resource, timeout=None):
         """
@@ -114,32 +114,13 @@ class Client(object):
 
         """
         try:
-            self._request(self.METHOD_GET, resource, timeout=timeout)
+            self._request(http_methods.GET, resource, timeout=timeout)
             return True
         except ClientError:
             return False
 
-    def _get_or_post(self, method, resource, post_data=None, timeout=None, data_format=DF.JSON):
-        response = self._request(
-            method,
-            resource,
-            post_data=post_data,
-            timeout=timeout,
-            data_format=data_format
-        )
-
-        if data_format == DF.CSV:
-            return response.text
-
-        try:
-            return response.json()
-        except ValueError:
-            message = 'Unable to decode JSON response'
-            log.exception(message)
-            raise ClientError(message)
-
     # pylint: disable=no-member
-    def _request(self, method, resource, post_data=None, timeout=None, data_format=DF.JSON):
+    def _request(self, method, resource, data=None, timeout=None, data_format=DF.JSON):
         if timeout is None:
             timeout = self.timeout
 
@@ -157,14 +138,17 @@ class Client(object):
         try:
             uri = '{0}/{1}'.format(self.base_url, resource)
 
-            if method == self.METHOD_GET:
-                response = requests.get(uri, headers=headers, timeout=timeout)
-            elif method == self.METHOD_POST:
-                response = requests.post(uri, data=(post_data or {}), headers=headers, timeout=timeout)
+            if method == http_methods.GET:
+                params = self._data_to_get_params(data or {})
+                response = requests.get(uri, params=params, headers=headers, timeout=timeout)
+            elif method == http_methods.POST:
+                response = requests.post(uri, data=(data or {}), headers=headers, timeout=timeout)
             else:
                 raise ValueError(
                     'Invalid \'method\' argument: expected {0} or {1}, got {2}'.format(
-                        self.METHOD_GET, self.METHOD_POST, method
+                        http_methods.GET,
+                        http_methods.POST,
+                        method,
                     )
                 )
 
@@ -194,3 +178,15 @@ class Client(object):
             message = 'Unable to retrieve resource'
             log.exception(message)
             raise ClientError('{0} "{1}"'.format(message, resource))
+
+    @staticmethod
+    def _data_to_get_params(data):
+        return {
+            key: (
+                ','.join(value)
+                if type(value) == list
+                else str(value)
+            )
+            for key, value in data.iteritems()
+        }
+

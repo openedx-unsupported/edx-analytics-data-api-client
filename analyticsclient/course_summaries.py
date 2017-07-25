@@ -1,8 +1,11 @@
+from analyticsclient.constants import http_methods, MAX_NUM_COURSE_IDS_FOR_GET
 import analyticsclient.constants.data_format as DF
 
 
 class CourseSummaries(object):
     """Course summaries."""
+
+    PATH = 'course_summaries/'
 
     def __init__(self, client):
         """
@@ -15,7 +18,21 @@ class CourseSummaries(object):
         """
         self.client = client
 
-    def course_summaries(self, course_ids=None, fields=None, exclude=None, programs=None, data_format=DF.JSON):
+    def course_summaries(
+            self,
+            course_ids=None,
+            availability=None,
+            pacing_type=None,
+            program_ids=None,
+            text_search=None,
+            sort_key=None,
+            order=None,
+            page=None,
+            page_size=None,
+            fields=None,
+            exclude=None,
+            data_format=DF.JSON,
+        ):
         """
         Get list of summaries.
 
@@ -25,12 +42,27 @@ class CourseSummaries(object):
             exclude: Array of fields to exclude from response. Default is to not exclude any fields.
             programs: If included in the query parameters, will include the programs array in the response.
         """
-        post_data = {}
-        for param_name, data in zip(['course_ids', 'fields', 'exclude', 'programs'],
-                                    [course_ids, fields, exclude, programs]):
-            if data:
-                post_data[param_name] = data
-
-        path = 'course_summaries/'
-
-        return self.client.post(path, post_data=post_data, data_format=data_format)
+        method = (
+            http_methods.POST
+            if len(course_ids or []) > MAX_NUM_COURSE_IDS_FOR_GET
+            else http_methods.GET
+        )
+        raw_data = {
+            'course_ids': course_ids,
+            'availability': availability,
+            'pacing_type': pacing_type,
+            'program_ids': program_ids,
+            'text_search': text_search,
+            'sortKey': sort_key,
+            'order': order,
+            'page': page,
+            'page_size': page_size,
+            'fields': fields,
+            'exclude': exclude,
+        }
+        data = {
+            key: value
+            for key, value in raw_data.iteritems()
+            if value
+        }
+        return self.client.request(method, self.PATH, data=data, data_format=data_format)
