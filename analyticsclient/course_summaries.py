@@ -1,4 +1,4 @@
-from analyticsclient.constants import MAX_NUM_COURSE_IDS_FOR_GET
+from analyticsclient.constants import http_methods, MAX_NUM_COURSE_IDS_FOR_GET
 import analyticsclient.constants.data_format as DF
 
 
@@ -42,6 +42,11 @@ class CourseSummaries(object):
             exclude: Array of fields to exclude from response. Default is to not exclude any fields.
             programs: If included in the query parameters, will include the programs array in the response.
         """
+        method = (
+            http_methods.POST
+            if len(course_ids or []) > MAX_NUM_COURSE_IDS_FOR_GET
+            else http_methods.GET
+        )
         raw_data = {
             'course_ids': course_ids,
             'availability': availability,
@@ -60,9 +65,4 @@ class CourseSummaries(object):
             for key, value in raw_data.iteritems()
             if value
         }
-        request_method = (
-            self.client.post
-            if len(course_ids or []) > MAX_NUM_COURSE_IDS_FOR_GET
-            else self.client.get
-        )
-        return request_method(self.PATH, data=data, data_format=data_format)
+        return self.client.request(method, self.PATH, data=data, data_format=data_format)
