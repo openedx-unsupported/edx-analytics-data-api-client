@@ -1,36 +1,69 @@
-import analyticsclient.constants.data_format as DF
+from analyticsclient.base import PostableCourseIDsEndpoint
+from analyticsclient.constants import data_formats
 
 
-class CourseSummaries(object):
+class CourseSummaries(PostableCourseIDsEndpoint):
     """Course summaries."""
 
-    def __init__(self, client):
-        """
-        Initialize the CourseSummaries client.
+    path = 'course_summaries/'
 
-        Arguments:
-
-            client (analyticsclient.client.Client): The client to use to access remote resources.
-
-        """
-        self.client = client
-
-    def course_summaries(self, course_ids=None, fields=None, exclude=None, programs=None, data_format=DF.JSON):
+    def course_summaries(
+            self,
+            course_ids=None,
+            availability=None,
+            pacing_type=None,
+            program_ids=None,
+            text_search=None,
+            order_by=None,
+            sort_order=None,
+            page=None,
+            page_size=None,
+            request_all=False,
+            fields=None,
+            exclude=None,
+            data_format=data_formats.JSON,
+    ):
         """
         Get list of summaries.
 
+        For more detailed parameter and return type descriptions, see the
+        edX Analytics Data API documentation.
+
         Arguments:
-            course_ids: Array of course IDs as strings to return.  Default is to return all.
-            fields: Array of fields to return.  Default is to return all.
-            exclude: Array of fields to exclude from response. Default is to not exclude any fields.
-            programs: If included in the query parameters, will include the programs array in the response.
+            course_ids (list[str]): Course IDs to filter by.
+            availability (list[str]) Availabilities to filter by.
+            pacing_type (list[str]): Pacing types to filter by.
+            program_ids (list[str]): Course IDs of programs to filter by.
+            text_search (str): Sub-string to search for in course titles and IDs.
+            order_by (str): Summary field to sort by.
+            sort_order (str): Order of the sort.
+            page (int): Page number.
+            page_size (int): Size of page.
+            request_all (bool): Whether all summaries should be returned, or just a
+                                single page. Overrides `page` and `page_size`.
+            fields (list[str]) Fields of course summaries to return in response.
+            exclude (list[str]) Fields of course summaries to NOT return in response.
+            data_format (str): Data format for response. Must be data_format.JSON or
+                               data_format.CSV.
+
+        Returns: dict
         """
-        post_data = {}
-        for param_name, data in zip(['course_ids', 'fields', 'exclude', 'programs'],
-                                    [course_ids, fields, exclude, programs]):
-            if data:
-                post_data[param_name] = data
-
-        path = 'course_summaries/'
-
-        return self.client.post(path, post_data=post_data, data_format=data_format)
+        raw_data = {
+            'availability': availability,
+            'pacing_type': pacing_type,
+            'program_ids': program_ids,
+            'text_search': text_search,
+            'order_by': order_by,
+            'sort_order': sort_order,
+            'page': page,
+            'page_size': page_size,
+            'fields': fields,
+            'exclude': exclude,
+            'all': request_all,
+        }
+        data = {
+            key: value
+            for key, value in raw_data.iteritems()
+            if value
+        }
+        return self.do_request(course_ids=course_ids, data=data, data_format=data_format)

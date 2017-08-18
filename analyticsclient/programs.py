@@ -1,23 +1,13 @@
 import urllib
 
-import analyticsclient.constants.data_format as DF
+from analyticsclient.base import BaseEndpoint
+from analyticsclient.constants import data_formats
 
 
-class Programs(object):
+class Programs(BaseEndpoint):
     """Programs client."""
 
-    def __init__(self, client):
-        """
-        Initialize the Programs client.
-
-        Arguments:
-
-            client (analyticsclient.client.Client): The client to use to access remote resources.
-
-        """
-        self.client = client
-
-    def programs(self, program_ids=None, fields=None, exclude=None, data_format=DF.JSON):
+    def programs(self, program_ids=None, fields=None, exclude=None, data_format=data_formats.JSON, **kwargs):
         """
         Get list of programs metadata.
 
@@ -28,7 +18,7 @@ class Programs(object):
         """
         query_params = {}
         for query_arg, data in zip(['program_ids', 'fields', 'exclude'],
-                                   [program_ids, fields, exclude]):
+                                   [program_ids, fields, exclude]) + kwargs.items():
             if data:
                 query_params[query_arg] = ','.join(data)
 
