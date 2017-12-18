@@ -7,6 +7,7 @@ from analyticsclient.constants import http_methods, data_formats
 from analyticsclient.course import Course
 from analyticsclient.course_totals import CourseTotals
 from analyticsclient.course_summaries import CourseSummaries
+from analyticsclient.engagement_timeline import EngagementTimeline
 from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
 from analyticsclient.module import Module
 from analyticsclient.programs import Programs
@@ -48,6 +49,7 @@ class Client(object):
         self.programs = lambda: Programs(self)
         self.courses = lambda course_id: Course(self, course_id)
         self.modules = lambda course_id, module_id: Module(self, course_id, module_id)
+        self.engagement_timeline = lambda username, course_id: EngagementTimeline(self, username, course_id)
 
     def get(self, *args, **kwargs):
         """
