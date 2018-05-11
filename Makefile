@@ -8,7 +8,7 @@ test.requirements:
 	pip install -q -r requirements.txt
 
 test:
-	nosetests --with-coverage --cover-inclusive --cover-branches \
+	nosetests -s --with-coverage --cover-inclusive --cover-branches \
 		--cover-html --cover-html-dir=$(COVERAGE)/html/ \
 		--cover-xml --cover-xml-file=$(COVERAGE)/coverage.xml \
 		--cover-package=$(PACKAGE) $(PACKAGE)/
