@@ -1,12 +1,1 @@
-requests==2.12.4
-
-# Testing
-coverage==4.3.1
-ddt==1.1.1
-nose==1.3.7
-httpretty==0.8.14
-pep8==1.7.0
-pylint==1.6.4
-pep257==0.7.0
-mock==2.0.0
-testfixtures==4.13.3
+-r requirements/base.txt

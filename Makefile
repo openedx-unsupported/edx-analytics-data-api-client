@@ -2,12 +2,17 @@ ROOT = $(shell echo "$$PWD")
 COVERAGE = $(ROOT)/build/coverage
 PACKAGE = analyticsclient
 
+.PHONY: test.requirements requirements validate quality
+
 validate: test.requirements test quality
 
-test.requirements:
-	pip install -q -r requirements.txt
+requirements:
+	pip install -q -r requirements/base.txt
 
-test:
+test.requirements: requirements
+	pip install -q -r requirements/test.txt
+
+test: test.requirements
 	nosetests --with-coverage --cover-inclusive --cover-branches \
 		--cover-html --cover-html-dir=$(COVERAGE)/html/ \
 		--cover-xml --cover-xml-file=$(COVERAGE)/coverage.xml \
