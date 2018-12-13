@@ -1,3 +1,5 @@
+import datetime
+
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import data_formats
 
@@ -14,6 +16,7 @@ class CourseSummaries(PostableCourseIDsEndpoint):
             pacing_type=None,
             program_ids=None,
             text_search=None,
+            recent_date=None,
             order_by=None,
             sort_order=None,
             page=None,
@@ -35,6 +38,9 @@ class CourseSummaries(PostableCourseIDsEndpoint):
             pacing_type (list[str]): Pacing types to filter by.
             program_ids (list[str]): Course IDs of programs to filter by.
             text_search (str): Sub-string to search for in course titles and IDs.
+            recent_date (date): A date in the past to compute enrollement count
+                                change relative to; can be a python date or
+                                'YYYY-MM-DD' string
             order_by (str): Summary field to sort by.
             sort_order (str): Order of the sort.
             page (int): Page number.
@@ -53,6 +59,7 @@ class CourseSummaries(PostableCourseIDsEndpoint):
             'pacing_type': pacing_type,
             'program_ids': program_ids,
             'text_search': text_search,
+            'recent_date': recent_date,
             'order_by': order_by,
             'sort_order': sort_order,
             'page': page,
@@ -66,4 +73,7 @@ class CourseSummaries(PostableCourseIDsEndpoint):
             for key, value in raw_data.iteritems()
             if value
         }
+        if recent_date and isinstance(recent_date, datetime.date):
+            data['recent_date'] = recent_date.strftime('%Y-%m-%d')
+
         return self.do_request(course_ids=course_ids, data=data, data_format=data_format)
