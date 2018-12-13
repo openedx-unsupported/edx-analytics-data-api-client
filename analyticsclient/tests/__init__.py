@@ -57,19 +57,23 @@ class APIWithIDsTestCase(object):
             if data
         }
 
-    @httpretty.activate
     def verify_query_params(self, **kwargs):
         """Construct URL with given query parameters and check if it is what we expect."""
+        return self.verify_query_params_vs_expected(kwargs, self.expected_query(**kwargs))
+
+    @httpretty.activate
+    def verify_query_params_vs_expected(self, params, expected):
+        """Construct URL with given query parameters and check if it is what we were told to expect."""
         httpretty.reset()
 
         uri_template = '{uri}?'
-        for key in kwargs:
+        for key in params:
             uri_template += '%s={%s}' % (key, key)
-        uri = uri_template.format(uri=self.base_uri, **kwargs)
+        uri = uri_template.format(uri=self.base_uri, **params)
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')
-        getattr(self.client_class, self.endpoint)(**kwargs)
-        self.verify_last_querystring_equal(self.expected_query(**kwargs))
+        getattr(self.client_class, self.endpoint)(**params)
+        self.verify_last_querystring_equal(expected)
 
     def fill_in_empty_params_with_dummies(self, **kwargs):
         """Fill in non-provided parameters with dummy values so they are tested."""

@@ -1,3 +1,4 @@
+import datetime
 import ddt
 
 from analyticsclient.tests import (
@@ -47,8 +48,19 @@ class CourseSummariesTests(APIListTestCase, APIWithPostableIDsTestCase, ClientTe
         (frozenset(), None),
     )
     @ddt.unpack
-    def test_all_parameters(self, param_names, param_value):
+    def test_most_parameters(self, param_names, param_value):
         """Course summaries can be called with all parameters."""
         params = {param_name: None for param_name in self._ALL_PARAMS}
         params.update({param_name: param_value for param_name in param_names})
         self.verify_query_params(**params)
+
+    @ddt.data(
+        ('2018-11-22', '2018-11-22'),
+        (datetime.date(2018, 11, 22), '2018-11-22'),
+    )
+    @ddt.unpack
+    def test_recent_date(self, recent, recent_str):
+        """recent_date can be passed as a date object or string."""
+        params = {'recent_date': recent}
+        expected = self.expected_query(**{'recent_date': recent_str})
+        self.verify_query_params_vs_expected(params, expected)
