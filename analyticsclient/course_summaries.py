@@ -70,7 +70,7 @@ class CourseSummaries(PostableCourseIDsEndpoint):
         }
         data = {
             key: value
-            for key, value in raw_data.iteritems()
+            for key, value in raw_data.items()
             if value
         }
         if recent_date and isinstance(recent_date, datetime.date):
