@@ -188,5 +188,5 @@ class Client(object):
                 if isinstance(value, list)
                 else str(value)
             )
-            for key, value in data.iteritems()
+            for key, value in data.items()
         }

@@ -53,7 +53,7 @@ class APIWithIDsTestCase(object):
             field: (
                 [','.join(data)] if isinstance(data, list) else [str(data)]
             )
-            for field, data in kwargs.iteritems()
+            for field, data in kwargs.items()
             if data
         }
 
@@ -108,7 +108,7 @@ class APIWithPostableIDsTestCase(APIWithIDsTestCase):
         getattr(self.client_class, self.endpoint)(**kwargs)
 
         expected_body = kwargs.copy()
-        for key, val in expected_body.iteritems():
+        for key, val in expected_body.items():
             if not isinstance(val, list):
                 expected_body[key] = [val]
         actual_body = httpretty.last_request().parsed_body
