@@ -10,3 +10,5 @@ pylint==1.6.4
 pep257==0.7.0
 mock==2.0.0
 testfixtures==4.13.3
+tox-travis==0.11
+tox==3.7.0
