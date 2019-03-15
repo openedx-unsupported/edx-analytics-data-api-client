@@ -1,5 +1,12 @@
 language: python
-python: '2.7'
+matrix:
+  include:
+    - python: 2.7
+      env: TOXENV=py27
+    - python: 3.6
+      env: TOXENV=py36
+  allow_failures:
+    - env: TOXENV=py36
 cache: pip
 sudo: false
 install:
