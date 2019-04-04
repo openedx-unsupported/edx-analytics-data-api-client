@@ -41,3 +41,4 @@ class HelperTests(TestCase):
         self.assertEqual('honor', enrollment_modes.HONOR)
         self.assertEqual('professional', enrollment_modes.PROFESSIONAL)
         self.assertEqual('verified', enrollment_modes.VERIFIED)
+        self.assertEqual('masters', enrollment_modes.MASTERS)
