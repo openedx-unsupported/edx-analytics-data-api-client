@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from unittest import TestCase
 from analyticsclient.constants import activity_types, demographics, education_levels, genders, enrollment_modes
 
