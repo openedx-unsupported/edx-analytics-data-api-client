@@ -1,5 +1,7 @@
 from __future__ import absolute_import
-import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 
 from analyticsclient.base import BaseEndpoint
 from analyticsclient.constants import data_formats
@@ -20,7 +22,7 @@ class Programs(BaseEndpoint):
         """
         query_params = {}
         for query_arg, data in list(zip(['program_ids', 'fields', 'exclude'],
-                                   [program_ids, fields, exclude])) + list(kwargs.items()):
+                                    [program_ids, fields, exclude])) + list(kwargs.items()):
             if data:
                 query_params[query_arg] = ','.join(data)
 

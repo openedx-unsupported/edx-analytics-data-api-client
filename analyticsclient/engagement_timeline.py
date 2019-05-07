@@ -1,5 +1,7 @@
 from __future__ import absolute_import
-import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import data_formats
 import six
