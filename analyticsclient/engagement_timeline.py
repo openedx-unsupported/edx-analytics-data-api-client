@@ -1,6 +1,7 @@
-import urllib
+from __future__ import absolute_import
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import data_formats
+import six
 
 
 class EngagementTimeline(PostableCourseIDsEndpoint):
@@ -19,11 +20,11 @@ class EngagementTimeline(PostableCourseIDsEndpoint):
         """
         super(EngagementTimeline, self).__init__(client)
 
-        self.username = unicode(username)
-        self.course_id = unicode(course_id)
+        self.username = six.text_type(username)
+        self.course_id = six.text_type(course_id)
 
     def get(self):
         """Get a particular learner's engagement timeline for a particular course."""
-        querystring = urllib.urlencode({'course_id': self.course_id})
+        querystring = six.moves.urllib.parse.urlencode({'course_id': self.course_id})
         path = 'engagement_timelines/{username}/?{querystring}'.format(username=self.username, querystring=querystring)
         return self.client.get(path, data_format=data_formats.JSON)

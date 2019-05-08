@@ -1,7 +1,8 @@
-import urllib
+from __future__ import absolute_import
 
 from analyticsclient.base import BaseEndpoint
 from analyticsclient.constants import data_formats
+import six
 
 
 class Programs(BaseEndpoint):
@@ -17,13 +18,13 @@ class Programs(BaseEndpoint):
             exclude: Array of fields to exclude from response. Default is to not exclude any fields.
         """
         query_params = {}
-        for query_arg, data in zip(['program_ids', 'fields', 'exclude'],
-                                   [program_ids, fields, exclude]) + kwargs.items():
+        for query_arg, data in list(six.moves.zip(['program_ids', 'fields', 'exclude'],
+                                                  [program_ids, fields, exclude])) + list(kwargs.items()):
             if data:
                 query_params[query_arg] = ','.join(data)
 
         path = 'programs/'
-        querystring = urllib.urlencode(query_params)
+        querystring = six.moves.urllib.parse.urlencode(query_params)
         if querystring:
             path += '?{0}'.format(querystring)
 

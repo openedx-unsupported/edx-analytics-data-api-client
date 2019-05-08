@@ -1,8 +1,9 @@
-import urllib
+from __future__ import absolute_import
 import warnings
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import activity_types, data_formats
 from analyticsclient.exceptions import InvalidRequestError
+import six
 
 
 class Course(PostableCourseIDsEndpoint):
@@ -19,7 +20,7 @@ class Course(PostableCourseIDsEndpoint):
 
         """
         super(Course, self).__init__(client)
-        self.course_id = unicode(course_id)
+        self.course_id = six.text_type(course_id)
 
     def enrollment(self, demographic=None, start_date=None, end_date=None, data_format=data_formats.JSON):
         """
@@ -49,7 +50,7 @@ class Course(PostableCourseIDsEndpoint):
         if end_date:
             params['end_date'] = end_date
 
-        querystring = urllib.urlencode(params)
+        querystring = six.moves.urllib.parse.urlencode(params)
         if querystring:
             path += '?{0}'.format(querystring)
 
@@ -77,7 +78,7 @@ class Course(PostableCourseIDsEndpoint):
             params['end_date'] = end_date
 
         path = 'courses/{0}/activity/'.format(self.course_id)
-        querystring = urllib.urlencode(params)
+        querystring = six.moves.urllib.parse.urlencode(params)
         path += '?{0}'.format(querystring)
 
         return self.client.get(path, data_format=data_format)
