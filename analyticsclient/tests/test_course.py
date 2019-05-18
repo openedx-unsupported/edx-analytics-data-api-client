@@ -131,11 +131,11 @@ class CoursesTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, uri, body='{}')
 
         self.course.enrollment()
-        self.assertEquals(httpretty.last_request().headers['Accept'], 'application/json')
+        self.assertEqual(httpretty.last_request().headers['Accept'], 'application/json')
 
         httpretty.register_uri(httpretty.GET, uri, body='not-json')
         self.course.enrollment(data_format=data_formats.CSV)
-        self.assertEquals(httpretty.last_request().headers['Accept'], 'text/csv')
+        self.assertEqual(httpretty.last_request().headers['Accept'], 'text/csv')
 
     @httpretty.activate
     def test_problems(self):
