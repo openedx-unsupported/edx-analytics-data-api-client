@@ -1,13 +1,15 @@
 from __future__ import absolute_import
+
 import json
 import re
 
 import httpretty
-
-from analyticsclient.constants import activity_types, data_formats, demographics
-from analyticsclient.exceptions import NotFoundError, InvalidRequestError
-from analyticsclient.tests import ClientTestCase
 import six
+
+from analyticsclient.constants import (activity_types, data_formats,
+                                       demographics)
+from analyticsclient.exceptions import InvalidRequestError, NotFoundError
+from analyticsclient.tests import ClientTestCase
 
 
 class CoursesTests(ClientTestCase):

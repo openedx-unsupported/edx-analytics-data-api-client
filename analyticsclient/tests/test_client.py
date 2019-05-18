@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+
 import json
 
 import httpretty
@@ -6,8 +7,8 @@ import mock
 import requests.exceptions
 from testfixtures import log_capture
 
-from analyticsclient.constants import data_formats, http_methods
 from analyticsclient.client import Client
+from analyticsclient.constants import data_formats, http_methods
 from analyticsclient.exceptions import ClientError, TimeoutError
 from analyticsclient.tests import ClientTestCase
 

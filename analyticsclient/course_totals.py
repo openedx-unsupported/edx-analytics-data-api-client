@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import data_formats
 

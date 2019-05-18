@@ -1,9 +1,12 @@
 from __future__ import absolute_import
+
 import warnings
+
+import six
+
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import activity_types, data_formats
 from analyticsclient.exceptions import InvalidRequestError
-import six
 
 
 class Course(PostableCourseIDsEndpoint):

@@ -1,12 +1,11 @@
 from __future__ import absolute_import
+
 import datetime
+
 import ddt
 
-from analyticsclient.tests import (
-    APIListTestCase,
-    APIWithPostableIDsTestCase,
-    ClientTestCase
-)
+from analyticsclient.tests import (APIListTestCase, APIWithPostableIDsTestCase,
+                                   ClientTestCase)
 
 
 @ddt.ddt
