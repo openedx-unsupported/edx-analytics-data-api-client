@@ -1,5 +1,6 @@
 from __future__ import absolute_import
-from analyticsclient.constants import http_methods, data_formats
+
+from analyticsclient.constants import data_formats, http_methods
 
 
 class BaseEndpoint(object):

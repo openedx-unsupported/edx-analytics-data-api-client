@@ -1,5 +1,6 @@
 from __future__ import absolute_import
-from analyticsclient.tests import ClientTestCase, APIWithPostableIDsTestCase
+
+from analyticsclient.tests import APIWithPostableIDsTestCase, ClientTestCase
 
 
 class CourseTotalsTests(APIWithPostableIDsTestCase, ClientTestCase):

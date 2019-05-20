@@ -1,19 +1,20 @@
 from __future__ import absolute_import
+
 import logging
 
 import requests
 import requests.exceptions
-from analyticsclient.constants import http_methods, data_formats
 
+from analyticsclient.constants import data_formats, http_methods
 from analyticsclient.course import Course
-from analyticsclient.course_totals import CourseTotals
 from analyticsclient.course_summaries import CourseSummaries
+from analyticsclient.course_totals import CourseTotals
 from analyticsclient.engagement_timeline import EngagementTimeline
-from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError
+from analyticsclient.exceptions import (ClientError, InvalidRequestError,
+                                        NotFoundError, TimeoutError)
 from analyticsclient.module import Module
 from analyticsclient.programs import Programs
 from analyticsclient.status import Status
-
 
 log = logging.getLogger(__name__)
 

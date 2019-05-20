@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+
 from analyticsclient.base import BaseEndpoint
 from analyticsclient.exceptions import ClientError
 

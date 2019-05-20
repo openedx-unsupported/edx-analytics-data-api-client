@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+
 import json
 
 import httpretty
@@ -6,8 +7,8 @@ import mock
 import requests.exceptions
 from testfixtures import log_capture
 
-from analyticsclient.constants import data_formats, http_methods
 from analyticsclient.client import Client
+from analyticsclient.constants import data_formats, http_methods
 from analyticsclient.exceptions import ClientError, TimeoutError
 from analyticsclient.tests import ClientTestCase
 
@@ -29,28 +30,28 @@ class ClientTests(ClientTestCase):
 
     def test_has_resource(self):
         httpretty.register_uri(httpretty.GET, self.test_url, body='')
-        self.assertEquals(self.client.has_resource(self.test_endpoint), True)
+        self.assertEqual(self.client.has_resource(self.test_endpoint), True)
 
     def test_missing_resource(self):
         httpretty.register_uri(httpretty.GET, self.test_url, body='', status=404)
-        self.assertEquals(self.client.has_resource(self.test_endpoint), False)
+        self.assertEqual(self.client.has_resource(self.test_endpoint), False)
 
     def test_failed_authentication(self):
         client = Client(base_url=self.api_url, auth_token='atoken')
         httpretty.register_uri(httpretty.GET, self.test_url, body='', status=401)
 
-        self.assertEquals(client.has_resource(self.test_endpoint), False)
-        self.assertEquals(httpretty.last_request().headers['Authorization'], 'Token atoken')
+        self.assertEqual(client.has_resource(self.test_endpoint), False)
+        self.assertEqual(httpretty.last_request().headers['Authorization'], 'Token atoken')
 
     def test_get(self):
         data = {'foo': 'bar'}
         httpretty.register_uri(httpretty.GET, self.test_url, body=json.dumps(data))
-        self.assertEquals(self.client.get(self.test_endpoint), data)
+        self.assertEqual(self.client.get(self.test_endpoint), data)
 
     def test_post(self):
         data = {'foo': 'bar'}
         httpretty.register_uri(httpretty.POST, self.test_url, body=json.dumps(data))
-        self.assertEquals(self.client.request(http_methods.POST, self.test_endpoint), data)
+        self.assertEqual(self.client.request(http_methods.POST, self.test_endpoint), data)
 
     def test_get_invalid_response_body(self):
         """ Verify that client raises a ClientError if the response body cannot be properly parsed. """
@@ -106,17 +107,17 @@ class ClientTests(ClientTestCase):
         httpretty.register_uri(httpretty.GET, self.test_url, body='{}')
 
         response = self.client.get(self.test_endpoint)
-        self.assertEquals(httpretty.last_request().headers['Accept'], 'application/json')
+        self.assertEqual(httpretty.last_request().headers['Accept'], 'application/json')
         self.assertDictEqual(response, {})
 
         httpretty.register_uri(httpretty.GET, self.test_url, body='not-json')
         response = self.client.get(self.test_endpoint, data_format=data_formats.CSV)
-        self.assertEquals(httpretty.last_request().headers['Accept'], 'text/csv')
+        self.assertEqual(httpretty.last_request().headers['Accept'], 'text/csv')
         self.assertEqual(response, 'not-json')
 
         httpretty.register_uri(httpretty.GET, self.test_url, body='{}')
         response = self.client.get(self.test_endpoint, data_format=data_formats.JSON)
-        self.assertEquals(httpretty.last_request().headers['Accept'], 'application/json')
+        self.assertEqual(httpretty.last_request().headers['Accept'], 'application/json')
         self.assertDictEqual(response, {})
 
     def test_unsupported_method(self):

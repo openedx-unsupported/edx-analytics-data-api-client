@@ -1,7 +1,9 @@
 from __future__ import absolute_import
+
+import six
+
 from analyticsclient.base import BaseEndpoint
 from analyticsclient.constants import data_formats
-import six
 
 
 class Module(BaseEndpoint):
