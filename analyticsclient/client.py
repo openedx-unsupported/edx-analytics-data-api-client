@@ -10,8 +10,7 @@ from analyticsclient.course import Course
 from analyticsclient.course_summaries import CourseSummaries
 from analyticsclient.course_totals import CourseTotals
 from analyticsclient.engagement_timeline import EngagementTimeline
-from analyticsclient.exceptions import (ClientError, InvalidRequestError,
-                                        NotFoundError, TimeoutError)
+from analyticsclient.exceptions import ClientError, InvalidRequestError, NotFoundError, TimeoutError  # pylint: disable=redefined-builtin
 from analyticsclient.module import Module
 from analyticsclient.programs import Programs
 from analyticsclient.status import Status
