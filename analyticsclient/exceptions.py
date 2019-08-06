@@ -16,7 +16,7 @@ class InvalidRequestError(ClientError):
     pass
 
 
-class TimeoutError(ClientError):
+class TimeoutError(ClientError):  # pylint: disable=redefined-builtin
     """The API server did not respond before the timeout expired."""
 
     pass

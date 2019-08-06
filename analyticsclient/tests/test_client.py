@@ -9,7 +9,7 @@ from testfixtures import log_capture
 
 from analyticsclient.client import Client
 from analyticsclient.constants import data_formats, http_methods
-from analyticsclient.exceptions import ClientError, TimeoutError
+from analyticsclient.exceptions import ClientError, TimeoutError  # pylint: disable=redefined-builtin
 from analyticsclient.tests import ClientTestCase
 
 
