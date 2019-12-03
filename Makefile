@@ -5,7 +5,7 @@ PACKAGE = analyticsclient
 validate: test.requirements test quality
 
 test.requirements:
-	pip install -q -r requirements.txt
+	pip install -q -r requirements/test.txt
 
 test:
 	nosetests --with-coverage --cover-inclusive --cover-branches \
@@ -19,3 +19,9 @@ quality:
 
 	# Ignore module level docstrings and all test files
 	pep257 --ignore=D100,D104,D203 --match='(?!test).*py' $(PACKAGE)
+
+upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
+upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
+	pip install -q pip-tools
+	pip-compile --rebuild --upgrade -o requirements/base.txt requirements/base.in
+	pip-compile --rebuild --upgrade -o requirements/test.txt requirements/test.in
