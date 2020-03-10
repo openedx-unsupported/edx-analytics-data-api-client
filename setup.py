@@ -10,7 +10,7 @@ from analyticsclient import __version__ as VERSION
 
 if sys.argv[-1] == 'tag':
     print("Tagging the version on github:")
-    os.system("git tag -a v%s -m 'v%s'" % (VERSION, VERSION))
+    os.system("git tag -a v%s -m '%s'" % (VERSION, VERSION))
     os.system("git push --tags")
     sys.exit()
 
