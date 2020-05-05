@@ -17,6 +17,29 @@ if sys.argv[-1] == 'tag':
 with codecs.open('README.rst', 'r', 'utf-8') as f:
     LONG_DESCRIPTION = f.read()
 
+def load_requirements(*requirements_paths):
+    """
+    Load all requirements from the specified requirements files.
+    Returns a list of requirement strings.
+    """
+    requirements = set()
+    for path in requirements_paths:
+        with open(path) as reqs:
+            requirements.update(
+                line.split('#')[0].strip() for line in reqs
+                if is_requirement(line.strip())
+            )
+    return list(requirements)
+
+
+def is_requirement(line):
+    """
+    Return True if the requirement line is a package requirement;
+    that is, it is not blank, a comment, a URL, or an included file.
+    """
+    return line and not line.startswith(('-r', '#', '-e', 'git+', '-c'))
+
+
 setup(
     name='edx-analytics-data-api-client',
     version=VERSION,
@@ -32,20 +55,10 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.8',
     ],
-    install_requires=[
-        "requests",
-    ],
-    tests_require=[
-        "coverage",
-        "nose",
-        "httpretty",
-        "pep8",
-        "pylint",
-        "pep257"
-    ]
+    install_requires=load_requirements('requirements/base.in'),
+    test_requires=load_requirements('requirements/base.in')
 )

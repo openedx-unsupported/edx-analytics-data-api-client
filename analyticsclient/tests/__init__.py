@@ -30,7 +30,7 @@ class ClientTestCase(TestCase):
 
 
 @ddt.ddt
-class APIWithIDsTestCase(object):
+class APIWithIDsTestCase:
     """Base class for tests for API endpoints that take lists of IDs."""
 
     # Override in the subclass:
