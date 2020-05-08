@@ -1,3 +1,4 @@
 -c constraints.txt
 
-requests
+tox
+tox-travis

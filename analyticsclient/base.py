@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from analyticsclient.constants import data_formats, http_methods
 
 
-class BaseEndpoint(object):
+class BaseEndpoint:
     """Base class for endpoints that use a client object."""
 
     def __init__(self, client):

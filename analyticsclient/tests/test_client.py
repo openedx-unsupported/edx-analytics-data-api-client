@@ -71,8 +71,8 @@ class ClientTests(ClientTestCase):
         self.assertEqual(client.base_url, url)
 
     # pylint: disable=protected-access
-    @mock.patch('requests.get', side_effect=requests.exceptions.Timeout)
     @log_capture()
+    @mock.patch('requests.get', side_effect=requests.exceptions.Timeout)
     def test_request_timeout(self, mock_get, lc):
         url = self.test_url
         timeout = None
