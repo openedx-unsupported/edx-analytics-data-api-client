@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 
 from analyticsclient.constants import data_formats, http_methods
 
