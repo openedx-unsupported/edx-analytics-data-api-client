@@ -4,7 +4,6 @@ import json
 import re
 
 import httpretty
-import six
 
 from analyticsclient.constants import (activity_types, data_formats,
                                        demographics)
@@ -72,10 +71,10 @@ class CoursesTests(ClientTestCase):
     @httpretty.activate
     def assertRecentActivityResponseData(self, course, activity_type):
         body = {
-            u'course_id': six.text_type(course.course_id),
+            u'course_id': str(course.course_id),
             u'interval_start': u'2014-05-24T00:00:00Z',
             u'interval_end': u'2014-06-01T00:00:00Z',
-            u'activity_type': six.text_type(activity_type),
+            u'activity_type': str(activity_type),
             u'count': 200,
         }
 

@@ -1,7 +1,5 @@
 
 
-import six
-
 from analyticsclient.base import BaseEndpoint
 from analyticsclient.constants import data_formats
 
@@ -19,8 +17,8 @@ class Module(BaseEndpoint):
             module_id (str): String identifying the module
         """
         super(Module, self).__init__(client)
-        self.course_id = six.text_type(course_id)
-        self.module_id = six.text_type(module_id)
+        self.course_id = str(course_id)
+        self.module_id = str(module_id)
 
     def answer_distribution(self, data_format=data_formats.JSON):
         """

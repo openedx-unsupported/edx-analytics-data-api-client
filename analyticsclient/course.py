@@ -1,8 +1,7 @@
 
 
 import warnings
-
-import six
+from urllib.parse import urlencode
 
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import activity_types, data_formats
@@ -23,7 +22,7 @@ class Course(PostableCourseIDsEndpoint):
 
         """
         super(Course, self).__init__(client)
-        self.course_id = six.text_type(course_id)
+        self.course_id = str(course_id)
 
     def enrollment(self, demographic=None, start_date=None, end_date=None, data_format=data_formats.JSON):
         """
@@ -53,7 +52,7 @@ class Course(PostableCourseIDsEndpoint):
         if end_date:
             params['end_date'] = end_date
 
-        querystring = six.moves.urllib.parse.urlencode(params)
+        querystring = urlencode(params)
         if querystring:
             path += '?{0}'.format(querystring)
 
@@ -81,7 +80,7 @@ class Course(PostableCourseIDsEndpoint):
             params['end_date'] = end_date
 
         path = 'courses/{0}/activity/'.format(self.course_id)
-        querystring = six.moves.urllib.parse.urlencode(params)
+        querystring = urlencode(params)
         path += '?{0}'.format(querystring)
 
         return self.client.get(path, data_format=data_format)
