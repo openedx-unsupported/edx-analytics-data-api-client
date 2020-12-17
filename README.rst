@@ -21,7 +21,7 @@ high code quality, which will make your contribution more likely to be accepted.
 .. _individual contributor's agreement: http://code.edx.org/individual-contributor-agreement.pdf
 .. _CONTRIBUTING: https://github.com/edx/edx-platform/blob/master/CONTRIBUTING.rst
 
-.. |build-status| image:: https://travis-ci.org/edx/edx-analytics-data-api-client.svg?branch=master
-   :target: https://travis-ci.org/edx/edx-analytics-data-api-client
+.. |build-status| image:: https://travis-ci.com/edx/edx-analytics-data-api-client.svg?branch=master
+   :target: https://travis-ci.com/edx/edx-analytics-data-api-client
 .. |coverage-status| image:: https://coveralls.io/repos/edx/edx-analytics-data-api-client/badge.png
    :target: https://coveralls.io/r/edx/edx-analytics-data-api-client
