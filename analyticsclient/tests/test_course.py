@@ -1,5 +1,3 @@
-
-
 import json
 import re
 
@@ -13,19 +11,19 @@ from analyticsclient.tests import ClientTestCase
 
 class CoursesTests(ClientTestCase):
     def setUp(self):
-        super(CoursesTests, self).setUp()
+        super().setUp()
         self.course_id = 'edX/DemoX/Demo_Course'
         self.course = self.client.courses(self.course_id)
         httpretty.enable()
 
     def tearDown(self):
-        super(CoursesTests, self).tearDown()
+        super().tearDown()
         httpretty.disable()
 
     def assertCorrectEnrollmentUrl(self, course, demographic=None):
         """ Verifies that the enrollment URL is correct. """
 
-        uri = self.get_api_url('courses/{0}/enrollment/'.format(course.course_id))
+        uri = self.get_api_url(f'courses/{course.course_id}/enrollment/')
         if demographic:
             uri += '%s/' % demographic
 
@@ -34,11 +32,11 @@ class CoursesTests(ClientTestCase):
 
         date = '2014-01-01'
         httpretty.reset()
-        httpretty.register_uri(httpretty.GET, '{0}?start_date={1}'.format(uri, date), body='{}')
+        httpretty.register_uri(httpretty.GET, f'{uri}?start_date={date}', body='{}')
         course.enrollment(demographic, start_date=date)
 
         httpretty.reset()
-        httpretty.register_uri(httpretty.GET, '{0}?end_date={1}'.format(uri, date), body='{}')
+        httpretty.register_uri(httpretty.GET, f'{uri}?end_date={date}', body='{}')
         course.enrollment(demographic, end_date=date)
 
         httpretty.reset()
@@ -48,7 +46,7 @@ class CoursesTests(ClientTestCase):
     def assertCorrectActivityUrl(self, course, activity_type=None):
         """ Verifies that the activity URL is correct. """
 
-        uri = self.get_api_url('courses/{0}/activity/'.format(course.course_id))
+        uri = self.get_api_url(f'courses/{course.course_id}/activity/')
         if activity_type:
             uri += '?activity_type=%s' % activity_type
 
@@ -57,11 +55,11 @@ class CoursesTests(ClientTestCase):
 
         date = '2014-01-01'
         httpretty.reset()
-        httpretty.register_uri(httpretty.GET, '{0}&start_date={1}'.format(uri, date), body='{}')
+        httpretty.register_uri(httpretty.GET, f'{uri}&start_date={date}', body='{}')
         course.activity(activity_type, start_date=date)
 
         httpretty.reset()
-        httpretty.register_uri(httpretty.GET, '{0}&end_date={1}'.format(uri, date), body='{}')
+        httpretty.register_uri(httpretty.GET, f'{uri}&end_date={date}', body='{}')
         course.activity(activity_type, end_date=date)
 
         httpretty.reset()
@@ -71,14 +69,14 @@ class CoursesTests(ClientTestCase):
     @httpretty.activate
     def assertRecentActivityResponseData(self, course, activity_type):
         body = {
-            u'course_id': str(course.course_id),
-            u'interval_start': u'2014-05-24T00:00:00Z',
-            u'interval_end': u'2014-06-01T00:00:00Z',
-            u'activity_type': str(activity_type),
-            u'count': 200,
+            'course_id': str(course.course_id),
+            'interval_start': '2014-05-24T00:00:00Z',
+            'interval_end': '2014-06-01T00:00:00Z',
+            'activity_type': str(activity_type),
+            'count': 200,
         }
 
-        uri = self.get_api_url('courses/{0}/recent_activity/?activity_type={1}'.format(self.course_id, activity_type))
+        uri = self.get_api_url(f'courses/{self.course_id}/recent_activity/?activity_type={activity_type}')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertDictEqual(body, self.course.recent_activity(activity_type))
 
@@ -92,7 +90,7 @@ class CoursesTests(ClientTestCase):
         """ Course calls should raise a NotFoundError when provided with an invalid course. """
 
         course_id = 'not-a-course-id'
-        uri = self.get_api_url('courses/{0}/'.format(course_id))
+        uri = self.get_api_url(f'courses/{course_id}/')
         uri = re.compile(r'^' + re.escape(uri) + r'.*$')
         httpretty.register_uri(httpretty.GET, uri, status=404)
 
@@ -103,7 +101,7 @@ class CoursesTests(ClientTestCase):
     def test_invalid_parameter(self):
         """ Course calls should raise a InvalidRequestError when parameters are invalid. """
 
-        uri = self.get_api_url('courses/{0}/'.format(self.course_id))
+        uri = self.get_api_url(f'courses/{self.course_id}/')
         uri = re.compile(r'^' + re.escape(uri) + r'.*$')
         httpretty.register_uri(httpretty.GET, uri, status=400)
 
@@ -125,7 +123,7 @@ class CoursesTests(ClientTestCase):
         self.assertCorrectActivityUrl(self.course, activity_types.POSTED_FORUM)
 
     def test_enrollment_data_format(self):
-        uri = self.get_api_url('courses/{0}/enrollment/'.format(self.course.course_id))
+        uri = self.get_api_url(f'courses/{self.course.course_id}/enrollment/')
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')
 
@@ -145,7 +143,7 @@ class CoursesTests(ClientTestCase):
             }
         ]
 
-        uri = self.get_api_url('courses/{0}/problems/'.format(self.course_id))
+        uri = self.get_api_url(f'courses/{self.course_id}/problems/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.problems())
 
@@ -158,7 +156,7 @@ class CoursesTests(ClientTestCase):
             }
         ]
 
-        uri = self.get_api_url('courses/{0}/problems_and_tags/'.format(self.course_id))
+        uri = self.get_api_url(f'courses/{self.course_id}/problems_and_tags/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.problems_and_tags())
 
@@ -174,7 +172,7 @@ class CoursesTests(ClientTestCase):
             "report_name": "problem_response"
         }
 
-        uri = self.get_api_url('courses/{0}/reports/problem_response/'.format(self.course_id))
+        uri = self.get_api_url(f'courses/{self.course_id}/reports/problem_response/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.reports("problem_response"))
 
@@ -193,6 +191,6 @@ class CoursesTests(ClientTestCase):
             }
         ]
 
-        uri = self.get_api_url('courses/{0}/videos/'.format(self.course_id))
+        uri = self.get_api_url(f'courses/{self.course_id}/videos/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.course.videos())

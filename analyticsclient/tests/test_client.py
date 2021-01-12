@@ -1,9 +1,7 @@
-
-
 import json
 
 import httpretty
-import mock
+from unittest import mock
 import requests.exceptions
 from testfixtures import log_capture
 
@@ -15,7 +13,7 @@ from analyticsclient.tests import ClientTestCase
 
 class ClientTests(ClientTestCase):
     def setUp(self):
-        super(ClientTests, self).setUp()
+        super().setUp()
         httpretty.enable()
         self.test_endpoint = 'test'
         self.test_url = self.get_api_url(self.test_endpoint)
@@ -85,7 +83,7 @@ class ClientTests(ClientTestCase):
             self.test_endpoint,
             timeout=timeout
         )
-        msg = 'Response from {0} exceeded timeout of {1}s.'.format(self.test_endpoint, self.client.timeout)
+        msg = f'Response from {self.test_endpoint} exceeded timeout of {self.client.timeout}s.'
         lc.check(('analyticsclient.client', 'ERROR', msg))
         lc.clear()
         mock_get.assert_called_once_with(url, headers=headers, timeout=self.client.timeout, params={})
@@ -100,7 +98,7 @@ class ClientTests(ClientTestCase):
             timeout=timeout
         )
         mock_get.assert_called_once_with(url, headers=headers, timeout=timeout, params={})
-        msg = 'Response from {0} exceeded timeout of {1}s.'.format(self.test_endpoint, timeout)
+        msg = f'Response from {self.test_endpoint} exceeded timeout of {timeout}s.'
         lc.check(('analyticsclient.client', 'ERROR', msg))
 
     def test_request_format(self):

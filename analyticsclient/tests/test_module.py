@@ -1,5 +1,3 @@
-
-
 import json
 
 import httpretty
@@ -9,7 +7,7 @@ from analyticsclient.tests import ClientTestCase
 
 class ModulesTests(ClientTestCase):
     def setUp(self):
-        super(ModulesTests, self).setUp()
+        super().setUp()
         httpretty.enable()
 
         self.course_id = 'edX/TestX/TestCourse'
@@ -18,26 +16,26 @@ class ModulesTests(ClientTestCase):
         self.module = self.client.modules(self.course_id, self.module_id)
 
     def tearDown(self):
-        super(ModulesTests, self).tearDown()
+        super().tearDown()
         httpretty.disable()
 
     def test_open_distribution_url(self):
         """ Verifies that the sequential open URL is correct. """
-        uri = self.get_api_url('problems/{0}/sequential_open_distribution/'.format(self.module_id))
+        uri = self.get_api_url(f'problems/{self.module_id}/sequential_open_distribution/')
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')
         self.module.sequential_open_distribution()
 
     def test_answer_distribution_url(self):
         """ Verifies that the answer distribution URL is correct. """
-        uri = self.get_api_url('problems/{0}/answer_distribution/'.format(self.module_id))
+        uri = self.get_api_url(f'problems/{self.module_id}/answer_distribution/')
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')
         self.module.answer_distribution()
 
     def test_grade_distribution_url(self):
         """ Verifies that the grade distribution URL is correct. """
-        uri = self.get_api_url('problems/{0}/grade_distribution/'.format(self.module_id))
+        uri = self.get_api_url(f'problems/{self.module_id}/grade_distribution/')
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')
         self.module.grade_distribution()
@@ -54,7 +52,7 @@ class ModulesTests(ClientTestCase):
             }
         ]
 
-        uri = self.get_api_url('problems/{0}/sequential_open_distribution/'.format(self.module_id))
+        uri = self.get_api_url(f'problems/{self.module_id}/sequential_open_distribution/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.module.sequential_open_distribution())
 
@@ -77,7 +75,7 @@ class ModulesTests(ClientTestCase):
             }
         ]
 
-        uri = self.get_api_url('problems/{0}/answer_distribution/'.format(self.module_id))
+        uri = self.get_api_url(f'problems/{self.module_id}/answer_distribution/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.module.answer_distribution())
 
@@ -95,7 +93,7 @@ class ModulesTests(ClientTestCase):
             }
         ]
 
-        uri = self.get_api_url('problems/{0}/grade_distribution/'.format(self.module_id))
+        uri = self.get_api_url(f'problems/{self.module_id}/grade_distribution/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.module.grade_distribution())
 
@@ -111,6 +109,6 @@ class ModulesTests(ClientTestCase):
             }
         ]
 
-        uri = self.get_api_url('videos/{0}/timeline/'.format(self.module_id))
+        uri = self.get_api_url(f'videos/{self.module_id}/timeline/')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.module.video_timeline())

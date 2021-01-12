@@ -1,5 +1,3 @@
-
-
 import ddt
 
 from analyticsclient.tests import APIListTestCase, ClientTestCase

@@ -1,5 +1,3 @@
-
-
 from unittest import TestCase
 
 from analyticsclient.constants import (activity_types, demographics,

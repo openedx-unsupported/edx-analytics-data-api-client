@@ -1,5 +1,3 @@
-
-
 import json
 
 import httpretty
@@ -11,14 +9,14 @@ from analyticsclient.tests import ClientTestCase
 class EngagementTimelineTests(ClientTestCase):
 
     def setUp(self):
-        super(EngagementTimelineTests, self).setUp()
+        super().setUp()
         self.username = 'edx'
         self.course_id = 'edX/DemoX/Demo_Course'
         self.engagement_timeline = self.client.engagement_timeline(self.username, self.course_id)
         httpretty.enable()
 
     def tearDown(self):
-        super(EngagementTimelineTests, self).tearDown()
+        super().tearDown()
         httpretty.disable()
 
     def test_not_found(self):

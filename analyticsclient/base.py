@@ -1,5 +1,3 @@
-
-
 from analyticsclient.constants import data_formats, http_methods
 
 

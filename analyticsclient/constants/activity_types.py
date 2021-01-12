@@ -1,6 +1,6 @@
 """Course activity types."""
 
-ANY = u'any'
-ATTEMPTED_PROBLEM = u'attempted_problem'
-PLAYED_VIDEO = u'played_video'
-POSTED_FORUM = u'posted_forum'
+ANY = 'any'
+ATTEMPTED_PROBLEM = 'attempted_problem'
+PLAYED_VIDEO = 'played_video'
+POSTED_FORUM = 'posted_forum'

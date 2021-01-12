@@ -1,6 +1,6 @@
 """Course demographics."""
 
-BIRTH_YEAR = u'birth_year'
-EDUCATION = u'education'
-GENDER = u'gender'
-LOCATION = u'location'
+BIRTH_YEAR = 'birth_year'
+EDUCATION = 'education'
+GENDER = 'gender'
+LOCATION = 'location'

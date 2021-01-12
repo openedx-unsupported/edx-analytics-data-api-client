@@ -1,5 +1,3 @@
-
-
 from analyticsclient.base import PostableCourseIDsEndpoint
 from analyticsclient.constants import data_formats
 
