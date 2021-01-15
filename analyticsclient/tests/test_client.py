@@ -1,7 +1,7 @@
 import json
+from unittest import mock
 
 import httpretty
-from unittest import mock
 import requests.exceptions
 from testfixtures import log_capture
 

@@ -93,10 +93,10 @@ class Client:
 
         try:
             return response.json()
-        except ValueError:
+        except ValueError as exception:
             message = 'Unable to decode JSON response'
             log.exception(message)
-            raise ClientError(message)
+            raise ClientError(message) from exception
 
     def has_resource(self, resource, timeout=None):
         """
@@ -169,15 +169,15 @@ class Client:
 
             return response
 
-        except requests.exceptions.Timeout:
+        except requests.exceptions.Timeout as exception:
             message = f"Response from {resource} exceeded timeout of {timeout}s."
             log.exception(message)
-            raise TimeoutError(message)
+            raise TimeoutError(message) from exception
 
-        except requests.exceptions.RequestException:
+        except requests.exceptions.RequestException as exception:
             message = 'Unable to retrieve resource'
             log.exception(message)
-            raise ClientError(f'{message} "{resource}"')
+            raise ClientError(f'{message} "{resource}"') from exception
 
     @staticmethod
     def _data_to_get_params(data):

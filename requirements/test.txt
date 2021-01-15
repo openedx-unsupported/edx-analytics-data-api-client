@@ -38,8 +38,6 @@ lazy-object-proxy==1.4.3
     # via astroid
 mccabe==0.6.1
     # via pylint
-mock==4.0.3
-    # via -r requirements/test.in
 packaging==20.8
     # via pytest
 pluggy==0.13.1
@@ -68,7 +66,7 @@ six==1.15.0
     #   httpretty
 snowballstemmer==2.0.0
     # via pydocstyle
-testfixtures==6.17.0
+testfixtures==6.17.1
     # via -r requirements/test.in
 toml==0.10.2
     # via

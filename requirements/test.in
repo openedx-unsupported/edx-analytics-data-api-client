@@ -10,5 +10,4 @@ pylint
 pydocstyle
 pytest
 pytest-cov
-mock
 testfixtures
