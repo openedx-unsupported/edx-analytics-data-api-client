@@ -1,5 +1,3 @@
-
-
 import datetime
 
 from analyticsclient.base import PostableCourseIDsEndpoint

@@ -25,6 +25,6 @@ class Programs(BaseEndpoint):
         path = 'programs/'
         querystring = urlencode(query_params)
         if querystring:
-            path += '?{0}'.format(querystring)
+            path += f'?{querystring}'
 
         return self.client.get(path, data_format=data_format)

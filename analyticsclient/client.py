@@ -1,5 +1,3 @@
-
-
 import logging
 
 import requests
@@ -95,10 +93,10 @@ class Client:
 
         try:
             return response.json()
-        except ValueError:
+        except ValueError as exception:
             message = 'Unable to decode JSON response'
             log.exception(message)
-            raise ClientError(message)
+            raise ClientError(message) from exception
 
     def has_resource(self, resource, timeout=None):
         """
@@ -138,7 +136,7 @@ class Client:
             headers['Authorization'] = 'Token ' + self.auth_token
 
         try:
-            uri = '{0}/{1}'.format(self.base_url, resource)
+            uri = f'{self.base_url}/{resource}'
 
             if method == http_methods.GET:
                 params = self._data_to_get_params(data or {})
@@ -147,7 +145,7 @@ class Client:
                 response = requests.post(uri, data=(data or {}), headers=headers, timeout=timeout)
             else:
                 raise ValueError(
-                    'Invalid \'method\' argument: expected {0} or {1}, got {2}'.format(
+                    'Invalid \'method\' argument: expected {} or {}, got {}'.format(
                         http_methods.GET,
                         http_methods.POST,
                         method,
@@ -156,14 +154,14 @@ class Client:
 
             status = response.status_code
             if status != requests.codes.ok:
-                message = 'Resource "{0}" returned status code {1}'.format(resource, status)
+                message = f'Resource "{resource}" returned status code {status}'
                 error_class = ClientError
 
                 if status == requests.codes.bad_request:
-                    message = 'The request to {0} was invalid.'.format(uri)
+                    message = f'The request to {uri} was invalid.'
                     error_class = InvalidRequestError
                 elif status == requests.codes.not_found:
-                    message = 'Resource {0} was not found on the API server.'.format(uri)
+                    message = f'Resource {uri} was not found on the API server.'
                     error_class = NotFoundError
 
                 log.error(message)
@@ -171,15 +169,15 @@ class Client:
 
             return response
 
-        except requests.exceptions.Timeout:
-            message = "Response from {0} exceeded timeout of {1}s.".format(resource, timeout)
+        except requests.exceptions.Timeout as exception:
+            message = f"Response from {resource} exceeded timeout of {timeout}s."
             log.exception(message)
-            raise TimeoutError(message)
+            raise TimeoutError(message) from exception
 
-        except requests.exceptions.RequestException:
+        except requests.exceptions.RequestException as exception:
             message = 'Unable to retrieve resource'
             log.exception(message)
-            raise ClientError('{0} "{1}"'.format(message, resource))
+            raise ClientError(f'{message} "{resource}"') from exception
 
     @staticmethod
     def _data_to_get_params(data):

@@ -1,15 +1,9 @@
 language: python
 python:
-  - 3.5
-  - 3.8
+  - '3.8'
 env:
   - TOXENV=quality
-matrix:
- include:
-    - python: 3.5
-      env: TOXENV=py35
-    - python: 3.8
-      env: TOXENV=py38
+  - TOXENV=py38
 cache: pip
 sudo: false
 branches:
@@ -17,19 +11,19 @@ branches:
     - master
     - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 install:
-- pip install coveralls
-- pip install -r requirements/tox.txt
+  - pip install coveralls
+  - pip install -r requirements/tox.txt
 script: tox
 after_success:
-- coveralls
-- bash ./scripts/build-stats-to-datadog.sh
+  - coveralls
+  - bash ./scripts/build-stats-to-datadog.sh
 deploy:
   provider: pypi
   user: edx
   distributions: sdist bdist_wheel
   on:
     tags: true
-    python: 3.5
-    condition: "$TOXENV = quality"
+    python: 3.8
+    condition: $TOXENV = quality
   password:
     secure: niAkz7MPmeGxu+dgicFGm8SydYPy0PYZI8jn/Rcs+B9ASPt8oJ0sFxGLtYLl7b0Rg9UcRrHHfoLOMWYK/0n+cdgGPJEmtXHnxBgzSdliYl5kO16A3omK4s7a8794qJ+4DM/LraFc2jU3Fg1t2PJZp4BuNMVIpSch3iZ3bvWhh/s=

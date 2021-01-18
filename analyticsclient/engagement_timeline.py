@@ -1,4 +1,3 @@
-
 from urllib.parse import urlencode
 
 from analyticsclient.base import PostableCourseIDsEndpoint
@@ -19,7 +18,7 @@ class EngagementTimeline(PostableCourseIDsEndpoint):
             course_id (str): String identifying the course (e.g. edX/DemoX/Demo_Course)
 
         """
-        super(EngagementTimeline, self).__init__(client)
+        super().__init__(client)
 
         self.username = str(username)
         self.course_id = str(course_id)
@@ -27,5 +26,5 @@ class EngagementTimeline(PostableCourseIDsEndpoint):
     def get(self):
         """Get a particular learner's engagement timeline for a particular course."""
         querystring = urlencode({'course_id': self.course_id})
-        path = 'engagement_timelines/{username}/?{querystring}'.format(username=self.username, querystring=querystring)
+        path = f'engagement_timelines/{self.username}/?{querystring}'
         return self.client.get(path, data_format=data_formats.JSON)

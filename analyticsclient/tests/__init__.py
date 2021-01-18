@@ -1,5 +1,3 @@
-
-
 from unittest import TestCase
 
 import ddt
@@ -26,7 +24,7 @@ class ClientTestCase(TestCase):
         Returns:
             Complete API URL and path
         """
-        return "{0}/{1}".format(self.client.base_url, path)
+        return f"{self.client.base_url}/{path}"
 
 
 @ddt.ddt
@@ -40,8 +38,8 @@ class APIWithIDsTestCase:
 
     def setUp(self):
         """Set up the test case."""
-        super(APIWithIDsTestCase, self).setUp()
-        self.base_uri = self.get_api_url('{}/'.format(self.endpoint))
+        super().setUp()
+        self.base_uri = self.get_api_url(f'{self.endpoint}/')
         self.client_class = getattr(self.client, self.endpoint)()
         httpretty.enable()
 

@@ -1,5 +1,3 @@
-
-
 import codecs
 import os
 import sys
@@ -56,7 +54,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.8',
     ],
     install_requires=load_requirements('requirements/base.in'),

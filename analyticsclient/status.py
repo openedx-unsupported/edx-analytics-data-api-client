@@ -1,5 +1,3 @@
-
-
 from analyticsclient.base import BaseEndpoint
 from analyticsclient.exceptions import ClientError
 

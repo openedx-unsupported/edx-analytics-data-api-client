@@ -1,5 +1,3 @@
-
-
 from analyticsclient.base import BaseEndpoint
 from analyticsclient.constants import data_formats
 
@@ -16,7 +14,7 @@ class Module(BaseEndpoint):
             course_id (str): String identifying the course
             module_id (str): String identifying the module
         """
-        super(Module, self).__init__(client)
+        super().__init__(client)
         self.course_id = str(course_id)
         self.module_id = str(module_id)
 
@@ -27,7 +25,7 @@ class Module(BaseEndpoint):
         Arguments:
             data_format (str): Format in which to return data (default is JSON)
         """
-        path = 'problems/{0}/answer_distribution/'.format(self.module_id)
+        path = f'problems/{self.module_id}/answer_distribution/'
 
         return self.client.get(path, data_format=data_format)
 
@@ -38,7 +36,7 @@ class Module(BaseEndpoint):
         Arguments:
             data_format (str): Format in which to return data (default is JSON)
         """
-        path = 'problems/{0}/grade_distribution/'.format(self.module_id)
+        path = f'problems/{self.module_id}/grade_distribution/'
 
         return self.client.get(path, data_format=data_format)
 
@@ -49,7 +47,7 @@ class Module(BaseEndpoint):
         Arguments:
             data_format (str): Format in which to return data (default is JSON)
         """
-        path = 'problems/{0}/sequential_open_distribution/'.format(self.module_id)
+        path = f'problems/{self.module_id}/sequential_open_distribution/'
 
         return self.client.get(path, data_format=data_format)
 
@@ -60,6 +58,6 @@ class Module(BaseEndpoint):
         Arguments:
             data_format (str): Format in which to return data (default is JSON)
         """
-        path = 'videos/{0}/timeline/'.format(self.module_id)
+        path = f'videos/{self.module_id}/timeline/'
 
         return self.client.get(path, data_format=data_format)
