@@ -29,7 +29,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -U pip wheel
-        pip install coveralls
         pip install -r requirements/tox.txt
 
     - name: Run Tests
@@ -38,4 +37,7 @@ jobs:
       run: tox
 
     - name: Run Coverage
-      run: coveralls
+      if: matrix.toxenv=='py38'
+      uses: codecov/codecov-action@v2
+      with:
+        fail_ci_if_error: true
