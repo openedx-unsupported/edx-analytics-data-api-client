@@ -145,11 +145,7 @@ class Client:
                 response = requests.post(uri, data=(data or {}), headers=headers, timeout=timeout)
             else:
                 raise ValueError(
-                    'Invalid \'method\' argument: expected {} or {}, got {}'.format(
-                        http_methods.GET,
-                        http_methods.POST,
-                        method,
-                    )
+                    f'Invalid \'method\' argument: expected {http_methods.GET} or {http_methods.POST}, got {method}'
                 )
 
             status = response.status_code

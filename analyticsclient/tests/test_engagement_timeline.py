@@ -21,8 +21,7 @@ class EngagementTimelineTests(ClientTestCase):
 
     def test_not_found(self):
         not_a_valid_course_id = 'foobar'
-        uri = self.get_api_url('engagement_timelines/{username}/?course_id={course_id}'
-                               .format(username=self.username, course_id=not_a_valid_course_id))
+        uri = self.get_api_url(f'engagement_timelines/{self.username}/?course_id={not_a_valid_course_id}')
         httpretty.register_uri(httpretty.GET, uri, status=404)
 
         engagement_timeline = self.client.engagement_timeline(self.username, not_a_valid_course_id)
@@ -40,7 +39,6 @@ class EngagementTimelineTests(ClientTestCase):
                 }
             ]
         }
-        uri = self.get_api_url('engagement_timelines/{username}/?course_id={course_id}'
-                               .format(username=self.username, course_id=self.course_id))
+        uri = self.get_api_url(f'engagement_timelines/{self.username}/?course_id={self.course_id}')
         httpretty.register_uri(httpretty.GET, uri, body=json.dumps(body))
         self.assertEqual(body, self.engagement_timeline.get())

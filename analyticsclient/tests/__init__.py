@@ -68,7 +68,7 @@ class APIWithIDsTestCase:
 
         uri_template = '{uri}?'
         for key in params:
-            uri_template += '%s={%s}' % (key, key)
+            uri_template += '%s={%s}' % (key, key)  # pylint: disable=consider-using-f-string
         uri = uri_template.format(uri=self.base_uri, **params)
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')

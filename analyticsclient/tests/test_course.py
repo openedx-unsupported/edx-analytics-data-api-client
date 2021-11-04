@@ -25,7 +25,7 @@ class CoursesTests(ClientTestCase):
 
         uri = self.get_api_url(f'courses/{course.course_id}/enrollment/')
         if demographic:
-            uri += '%s/' % demographic
+            uri += f'{demographic}/'
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')
         course.enrollment(demographic)
@@ -40,7 +40,7 @@ class CoursesTests(ClientTestCase):
         course.enrollment(demographic, end_date=date)
 
         httpretty.reset()
-        httpretty.register_uri(httpretty.GET, '{0}?start_date={1}&end_date={1}'.format(uri, date), body='{}')
+        httpretty.register_uri(httpretty.GET, f'{uri}?start_date={date}&end_date={date}', body='{}')
         course.enrollment(demographic, start_date=date, end_date=date)
 
     def assertCorrectActivityUrl(self, course, activity_type=None):
@@ -48,7 +48,7 @@ class CoursesTests(ClientTestCase):
 
         uri = self.get_api_url(f'courses/{course.course_id}/activity/')
         if activity_type:
-            uri += '?activity_type=%s' % activity_type
+            uri += f'?activity_type={activity_type}'
 
         httpretty.register_uri(httpretty.GET, uri, body='{}')
         course.activity(activity_type)
@@ -63,7 +63,7 @@ class CoursesTests(ClientTestCase):
         course.activity(activity_type, end_date=date)
 
         httpretty.reset()
-        httpretty.register_uri(httpretty.GET, '{0}&start_date={1}&end_date={1}'.format(uri, date), body='{}')
+        httpretty.register_uri(httpretty.GET, f'{uri}&start_date={date}&end_date={date}', body='{}')
         course.activity(activity_type, start_date=date, end_date=date)
 
     @httpretty.activate
