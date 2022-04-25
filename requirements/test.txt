@@ -24,10 +24,8 @@ ddt==1.4.4
     # via -r requirements/test.in
 dill==0.3.4
     # via pylint
-httpretty==0.9.7
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/test.in
+httpretty==1.1.4
+    # via -r requirements/test.in
 idna==3.3
     # via
     #   -r requirements/base.txt
@@ -64,8 +62,6 @@ pytest-cov==3.0.0
     # via -r requirements/test.in
 requests==2.27.1
     # via -r requirements/base.txt
-six==1.16.0
-    # via httpretty
 snowballstemmer==2.2.0
     # via pydocstyle
 testfixtures==6.18.5
