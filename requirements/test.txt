@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.11.3
+astroid==2.11.4
     # via pylint
 attrs==21.4.0
     # via pytest
@@ -50,7 +50,7 @@ pycodestyle==2.8.0
     # via -r requirements/test.in
 pydocstyle==6.1.1
     # via -r requirements/test.in
-pylint==2.13.7
+pylint==2.13.8
     # via -r requirements/test.in
 pyparsing==3.0.8
     # via packaging
@@ -79,7 +79,7 @@ urllib3==1.26.9
     # via
     #   -r requirements/base.txt
     #   requests
-wrapt==1.14.0
+wrapt==1.14.1
     # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
