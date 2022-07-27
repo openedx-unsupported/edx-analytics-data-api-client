@@ -2,7 +2,7 @@ name: Upgrade Python Requirements
 
 on:
   schedule:
-    - cron: "15 15 7/14 * *"
+    - cron: "15 15 2,16 * *"
   workflow_dispatch:
     inputs:
       branch:
@@ -15,7 +15,7 @@ jobs:
     uses: edx/.github/.github/workflows/upgrade-python-requirements.yml@master
     with:
       branch: ${{ github.event.inputs.branch || 'master' }}
-      email_address: "masters-requirements-update@2u-internal.opsgenie.net"
+      email_address: "cosmonauts-requirements-update@2u-internal.opsgenie.net"
       send_success_notification: true
     secrets:
       requirements_bot_github_token: ${{ secrets.REQUIREMENTS_BOT_GITHUB_TOKEN }}
