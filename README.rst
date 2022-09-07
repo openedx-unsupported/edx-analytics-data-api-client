@@ -19,9 +19,9 @@ Contributions are very welcome, but for legal reasons, you must submit a signed
 high code quality, which will make your contribution more likely to be accepted.
 
 .. _individual contributor's agreement: http://code.edx.org/individual-contributor-agreement.pdf
-.. _CONTRIBUTING: https://github.com/edx/edx-platform/blob/master/CONTRIBUTING.rst
+.. _CONTRIBUTING: https://github.com/openedx/edx-platform/blob/master/CONTRIBUTING.rst
 
-.. |build-status| image:: https://github.com/edx/edx-analytics-data-api-client/workflows/Python%20CI/badge.svg?branch=master
-   :target: https://github.com/edx/edx-analytics-data-api-client/actions?query=workflow%3A%22Python+CI%22
+.. |build-status| image:: https://github.com/openedx/edx-analytics-data-api-client/workflows/Python%20CI/badge.svg?branch=master
+   :target: https://github.com/openedx/edx-analytics-data-api-client/actions?query=workflow%3A%22Python+CI%22
 .. |coverage-status| image:: https://coveralls.io/repos/edx/edx-analytics-data-api-client/badge.png
    :target: https://coveralls.io/r/edx/edx-analytics-data-api-client
