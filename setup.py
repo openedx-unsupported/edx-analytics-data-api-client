@@ -56,7 +56,7 @@ setup(
     name='edx-analytics-data-api-client',
     version=VERSION,
     packages=['analyticsclient', 'analyticsclient.constants'],
-    url='https://github.com/edx/edx-analytics-data-api-client',
+    url='https://github.com/openedx/edx-analytics-data-api-client',
     description='Client used to access edX analytics data warehouse',
     long_description=LONG_DESCRIPTION,
     license='Apache License 2.0',
