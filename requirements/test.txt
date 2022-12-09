@@ -8,29 +8,27 @@ astroid==2.12.12
     # via pylint
 attrs==22.1.0
     # via pytest
-certifi==2022.9.24
+certifi==2022.12.7
     # via
-    #   -r requirements/base.txt
+    #   -r base.txt
     #   requests
 charset-normalizer==2.1.1
     # via
-    #   -r requirements/base.txt
+    #   -r base.txt
     #   requests
 coverage[toml]==6.5.0
     # via
-    #   -r requirements/test.in
+    #   -r test.in
     #   pytest-cov
 ddt==1.6.0
-    # via -r requirements/test.in
+    # via -r test.in
 dill==0.3.6
     # via pylint
-exceptiongroup==1.0.4
-    # via pytest
 httpretty==1.1.4
-    # via -r requirements/test.in
+    # via -r test.in
 idna==3.4
     # via
-    #   -r requirements/base.txt
+    #   -r base.txt
     #   requests
 iniconfig==1.1.1
     # via pytest
@@ -47,39 +45,30 @@ platformdirs==2.5.4
 pluggy==1.0.0
     # via pytest
 pycodestyle==2.9.1
-    # via -r requirements/test.in
+    # via -r test.in
 pydocstyle==6.1.1
-    # via -r requirements/test.in
+    # via -r test.in
 pylint==2.15.5
-    # via -r requirements/test.in
+    # via -r test.in
 pyparsing==3.0.9
     # via packaging
 pytest==7.2.0
     # via
-    #   -r requirements/test.in
+    #   -r test.in
     #   pytest-cov
 pytest-cov==4.0.0
-    # via -r requirements/test.in
+    # via -r test.in
 requests==2.28.1
-    # via -r requirements/base.txt
+    # via -r base.txt
 snowballstemmer==2.2.0
     # via pydocstyle
 testfixtures==7.0.3
-    # via -r requirements/test.in
-tomli==2.0.1
-    # via
-    #   coverage
-    #   pylint
-    #   pytest
+    # via -r test.in
 tomlkit==0.11.6
     # via pylint
-typing-extensions==4.4.0
-    # via
-    #   astroid
-    #   pylint
 urllib3==1.26.12
     # via
-    #   -r requirements/base.txt
+    #   -r base.txt
     #   requests
 wrapt==1.14.1
     # via astroid
