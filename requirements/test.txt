@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.15.2
+astroid==2.15.3
     # via pylint
 certifi==2022.12.7
     # via
@@ -38,7 +38,7 @@ lazy-object-proxy==1.9.0
     # via astroid
 mccabe==0.7.0
     # via pylint
-packaging==23.0
+packaging==23.1
     # via pytest
 platformdirs==3.2.0
     # via pylint
@@ -50,7 +50,7 @@ pydocstyle==6.3.0
     # via -r requirements/test.in
 pylint==2.17.2
     # via -r requirements/test.in
-pytest==7.3.0
+pytest==7.3.1
     # via
     #   -r requirements/test.in
     #   pytest-cov
