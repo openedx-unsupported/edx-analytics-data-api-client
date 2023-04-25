@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.15.3
+astroid==2.15.4
     # via pylint
 certifi==2022.12.7
     # via
@@ -40,7 +40,7 @@ mccabe==0.7.0
     # via pylint
 packaging==23.1
     # via pytest
-platformdirs==3.2.0
+platformdirs==3.3.0
     # via pylint
 pluggy==1.0.0
     # via pytest
@@ -48,7 +48,7 @@ pycodestyle==2.10.0
     # via -r requirements/test.in
 pydocstyle==6.3.0
     # via -r requirements/test.in
-pylint==2.17.2
+pylint==2.17.3
     # via -r requirements/test.in
 pytest==7.3.1
     # via
