@@ -6,7 +6,7 @@
 #
 astroid==2.15.4
     # via pylint
-certifi==2022.12.7
+certifi==2023.5.7
     # via
     #   -r requirements/base.txt
     #   requests
@@ -48,7 +48,7 @@ pycodestyle==2.10.0
     # via -r requirements/test.in
 pydocstyle==6.3.0
     # via -r requirements/test.in
-pylint==2.17.3
+pylint==2.17.4
     # via -r requirements/test.in
 pytest==7.3.1
     # via
@@ -56,7 +56,7 @@ pytest==7.3.1
     #   pytest-cov
 pytest-cov==4.0.0
     # via -r requirements/test.in
-requests==2.29.0
+requests==2.30.0
     # via -r requirements/base.txt
 snowballstemmer==2.2.0
     # via pydocstyle
@@ -73,7 +73,7 @@ typing-extensions==4.5.0
     # via
     #   astroid
     #   pylint
-urllib3==1.26.15
+urllib3==2.0.2
     # via
     #   -r requirements/base.txt
     #   requests
