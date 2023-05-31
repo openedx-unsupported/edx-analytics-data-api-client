@@ -14,7 +14,7 @@ charset-normalizer==3.1.0
     # via
     #   -r requirements/base.txt
     #   requests
-coverage[toml]==7.2.5
+coverage[toml]==7.2.7
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -54,7 +54,7 @@ pytest==7.3.1
     # via
     #   -r requirements/test.in
     #   pytest-cov
-pytest-cov==4.0.0
+pytest-cov==4.1.0
     # via -r requirements/test.in
 requests==2.31.0
     # via -r requirements/base.txt
@@ -69,7 +69,7 @@ tomli==2.0.1
     #   pytest
 tomlkit==0.11.8
     # via pylint
-typing-extensions==4.6.0
+typing-extensions==4.6.2
     # via
     #   astroid
     #   pylint
