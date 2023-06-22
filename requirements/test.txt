@@ -40,7 +40,7 @@ mccabe==0.7.0
     # via pylint
 packaging==23.1
     # via pytest
-platformdirs==3.5.3
+platformdirs==3.6.0
     # via pylint
 pluggy==1.0.0
     # via pytest
