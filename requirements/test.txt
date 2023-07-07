@@ -22,7 +22,7 @@ ddt==1.6.0
     # via -r requirements/test.in
 dill==0.3.6
     # via pylint
-exceptiongroup==1.1.1
+exceptiongroup==1.1.2
     # via pytest
 httpretty==1.1.4
     # via -r requirements/test.in
@@ -69,7 +69,7 @@ tomli==2.0.1
     #   pytest
 tomlkit==0.11.8
     # via pylint
-typing-extensions==4.6.3
+typing-extensions==4.7.1
     # via
     #   astroid
     #   pylint
