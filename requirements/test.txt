@@ -4,13 +4,13 @@
 #
 #    make upgrade
 #
-astroid==2.15.5
+astroid==2.15.6
     # via pylint
 certifi==2023.5.7
     # via
     #   -r requirements/base.txt
     #   requests
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
     # via
     #   -r requirements/base.txt
     #   requests
@@ -40,7 +40,7 @@ mccabe==0.7.0
     # via pylint
 packaging==23.1
     # via pytest
-platformdirs==3.8.0
+platformdirs==3.8.1
     # via pylint
 pluggy==1.2.0
     # via pytest
