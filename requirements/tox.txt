@@ -6,7 +6,7 @@
 #
 coverage==7.2.7
     # via -r requirements/tox.in
-distlib==0.3.6
+distlib==0.3.7
     # via virtualenv
 filelock==3.12.2
     # via
@@ -14,7 +14,7 @@ filelock==3.12.2
     #   virtualenv
 packaging==23.1
     # via tox
-platformdirs==3.8.1
+platformdirs==3.9.1
     # via virtualenv
 pluggy==1.2.0
     # via tox
@@ -28,5 +28,5 @@ tox==3.28.0
     # via
     #   -c requirements/common_constraints.txt
     #   -r requirements/tox.in
-virtualenv==20.23.1
+virtualenv==20.24.0
     # via tox
