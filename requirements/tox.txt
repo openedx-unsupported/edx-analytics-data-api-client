@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-coverage==7.2.7
+coverage==7.3.0
     # via -r requirements/tox.in
 distlib==0.3.7
     # via virtualenv
@@ -28,5 +28,5 @@ tox==3.28.0
     # via
     #   -c requirements/common_constraints.txt
     #   -r requirements/tox.in
-virtualenv==20.24.2
+virtualenv==20.24.3
     # via tox
