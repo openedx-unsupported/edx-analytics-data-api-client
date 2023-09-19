@@ -8,7 +8,7 @@ coverage==7.3.1
     # via -r requirements/tox.in
 distlib==0.3.7
     # via virtualenv
-filelock==3.12.3
+filelock==3.12.4
     # via
     #   tox
     #   virtualenv
@@ -28,7 +28,5 @@ tox==3.28.0
     # via
     #   -c requirements/common_constraints.txt
     #   -r requirements/tox.in
-typing-extensions==4.7.1
-    # via filelock
 virtualenv==20.24.5
     # via tox
