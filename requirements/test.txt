@@ -4,17 +4,17 @@
 #
 #    make upgrade
 #
-astroid==2.15.8
+astroid==3.0.0
     # via pylint
 certifi==2023.7.22
     # via
     #   -r requirements/base.txt
     #   requests
-charset-normalizer==3.2.0
+charset-normalizer==3.3.0
     # via
     #   -r requirements/base.txt
     #   requests
-coverage[toml]==7.3.1
+coverage[toml]==7.3.2
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -34,13 +34,11 @@ iniconfig==2.0.0
     # via pytest
 isort==5.12.0
     # via pylint
-lazy-object-proxy==1.9.0
-    # via astroid
 mccabe==0.7.0
     # via pylint
-packaging==23.1
+packaging==23.2
     # via pytest
-platformdirs==3.10.0
+platformdirs==3.11.0
     # via pylint
 pluggy==1.3.0
     # via pytest
@@ -48,7 +46,7 @@ pycodestyle==2.11.0
     # via -r requirements/test.in
 pydocstyle==6.3.0
     # via -r requirements/test.in
-pylint==2.17.6
+pylint==3.0.1
     # via -r requirements/test.in
 pytest==7.4.2
     # via
@@ -73,9 +71,7 @@ typing-extensions==4.8.0
     # via
     #   astroid
     #   pylint
-urllib3==2.0.5
+urllib3==2.0.6
     # via
     #   -r requirements/base.txt
     #   requests
-wrapt==1.15.0
-    # via astroid
