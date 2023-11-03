@@ -48,7 +48,7 @@ pydocstyle==6.3.0
     # via -r requirements/test.in
 pylint==3.0.2
     # via -r requirements/test.in
-pytest==7.4.2
+pytest==7.4.3
     # via
     #   -r requirements/test.in
     #   pytest-cov
