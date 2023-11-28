@@ -26,7 +26,7 @@ exceptiongroup==1.2.0
     # via pytest
 httpretty==1.1.4
     # via -r requirements/test.in
-idna==3.4
+idna==3.6
     # via
     #   -r requirements/base.txt
     #   requests
