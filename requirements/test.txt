@@ -4,9 +4,9 @@
 #
 #    make upgrade
 #
-astroid==3.0.2
+astroid==3.0.3
     # via pylint
-certifi==2023.11.17
+certifi==2024.2.2
     # via
     #   -r requirements/base.txt
     #   requests
@@ -38,7 +38,7 @@ mccabe==0.7.0
     # via pylint
 packaging==23.2
     # via pytest
-platformdirs==4.1.0
+platformdirs==4.2.0
     # via pylint
 pluggy==1.4.0
     # via pytest
