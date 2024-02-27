@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==3.0.3
+astroid==3.1.0
     # via pylint
 certifi==2024.2.2
     # via
@@ -14,11 +14,11 @@ charset-normalizer==3.3.2
     # via
     #   -r requirements/base.txt
     #   requests
-coverage[toml]==7.4.1
+coverage[toml]==7.4.3
     # via
     #   -r requirements/test.in
     #   pytest-cov
-ddt==1.7.1
+ddt==1.7.2
     # via -r requirements/test.in
 dill==0.3.8
     # via pylint
@@ -46,9 +46,9 @@ pycodestyle==2.11.1
     # via -r requirements/test.in
 pydocstyle==6.3.0
     # via -r requirements/test.in
-pylint==3.0.3
+pylint==3.1.0
     # via -r requirements/test.in
-pytest==8.0.1
+pytest==8.0.2
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -65,9 +65,9 @@ tomli==2.0.1
     #   coverage
     #   pylint
     #   pytest
-tomlkit==0.12.3
+tomlkit==0.12.4
     # via pylint
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via
     #   astroid
     #   pylint
@@ -75,3 +75,7 @@ urllib3==2.2.1
     # via
     #   -r requirements/base.txt
     #   requests
+
+# The following packages are considered to be unsafe in a requirements file:
+setuptools==69.1.1
+    # via -r requirements/base.txt

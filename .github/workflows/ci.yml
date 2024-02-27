@@ -3,10 +3,10 @@ name: Python CI
 on:
   push:
     branches:
-      - master
+    - master
   pull_request:
     branches:
-      - '**'
+    - '**'
 
 jobs:
   run_tests:
@@ -15,14 +15,18 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-20.04
-        python-version:
-          - 3.8
-        toxenv: [ py38,quality ]
+        - ubuntu-20.04
+        python-version: ['3.8', '3.12']
+        toxenv: [py38,py312,quality]
+        exclude:
+        - python-version: '3.8'
+          toxenv: 'py312'
+        - python-version: '3.12'
+          toxenv: 'py38'
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
 

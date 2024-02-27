@@ -14,3 +14,7 @@ requests==2.31.0
     # via -r requirements/base.in
 urllib3==2.2.1
     # via requests
+
+# The following packages are considered to be unsafe in a requirements file:
+setuptools==69.1.1
+    # via -r requirements/base.in
