@@ -18,6 +18,11 @@ jobs:
         - ubuntu-20.04
         python-version: ['3.8', '3.12']
         toxenv: [py38,py312,quality]
+        exclude:
+        - python-version: '3.8'
+          toxenv: 'py312'
+        - python-version: '3.12'
+          toxenv: 'py38'
     steps:
     - uses: actions/checkout@v3
     - name: setup python
