@@ -58,7 +58,7 @@ requests==2.31.0
     # via -r requirements/base.txt
 snowballstemmer==2.2.0
     # via pydocstyle
-testfixtures==8.0.0
+testfixtures==8.1.0
     # via -r requirements/test.in
 tomli==2.0.1
     # via
