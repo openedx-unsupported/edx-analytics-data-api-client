@@ -14,7 +14,7 @@ charset-normalizer==3.3.2
     # via
     #   -r requirements/base.txt
     #   requests
-coverage[toml]==7.4.3
+coverage[toml]==7.4.4
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -77,5 +77,5 @@ urllib3==2.2.1
     #   requests
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==69.1.1
+setuptools==69.2.0
     # via -r requirements/base.txt
