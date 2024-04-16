@@ -26,7 +26,7 @@ exceptiongroup==1.2.0
     # via pytest
 httpretty==1.1.4
     # via -r requirements/test.in
-idna==3.6
+idna==3.7
     # via
     #   -r requirements/base.txt
     #   requests
@@ -77,5 +77,5 @@ urllib3==2.2.1
     #   requests
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==69.2.0
+setuptools==69.5.1
     # via -r requirements/base.txt
