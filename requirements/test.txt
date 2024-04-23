@@ -22,7 +22,7 @@ ddt==1.7.2
     # via -r requirements/test.in
 dill==0.3.8
     # via pylint
-exceptiongroup==1.2.0
+exceptiongroup==1.2.1
     # via pytest
 httpretty==1.1.4
     # via -r requirements/test.in
@@ -40,7 +40,7 @@ packaging==24.0
     # via pytest
 platformdirs==4.2.0
     # via pylint
-pluggy==1.4.0
+pluggy==1.5.0
     # via pytest
 pycodestyle==2.11.1
     # via -r requirements/test.in
